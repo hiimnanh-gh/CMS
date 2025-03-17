@@ -1,0 +1,25 @@
+﻿@model CMS.Models.Booking
+
+@{
+    ViewData["Title"] = "Chi tiết đơn đặt vé";
+}
+
+<h2>Chi tiết đơn đặt vé</h2>
+
+<p><strong>Mã đơn:</strong> @Model.BookingId</p>
+<p><strong>Khách hàng:</strong> @Model.User.UserName</p>
+<p><strong>Email:</strong> @Model.EmailAddress</p>
+
+<p><strong>Rạp:</strong> @Model.Time.Theatre.Cinema.CinemaAddress</p>
+<p><strong>Phòng:</strong> @Model.Time.Theatre.TheatreNum</p>
+
+<p><strong>Ngày chiếu:</strong> @Model.Time.ShowingDate?.ToString("dd/MM/yyyy")</p>
+<p><strong>Giờ chiếu:</strong> @Model.Time.ShowingDatetime.ToString(@"hh\:mm")</p>
+
+
+<p><strong>Ghế:</strong> @string.Join(", ", Model.BookingSeats.Select(bs => bs.Seat.SeatRow + bs.Seat.SeatNumber))</p>
+
+<p><strong>Tổng tiền:</strong> @Model.BookingFee.ToString("N0") VNĐ</p>
+<p><strong>Ngày đặt:</strong> @Model.CreatedDatetime.ToString("dd/MM/yyyy HH:mm")</p>
+
+<a href="/BookingManagement/Index" class="btn btn-secondary">Quay lại</a>

@@ -1,0 +1,64 @@
+﻿@model CMS.Models.Booking
+
+@{
+    ViewData["Title"] = "Sửa đơn đặt vé";
+}
+
+<h2>Sửa đơn đặt vé</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="BookingId" />
+    <input type="hidden" asp-for="UserId" />
+    <input type="hidden" asp-for="CreatedDatetime" /> <!-- Giữ nguyên ngày đặt -->
+
+    <div class="form-group">
+        <label class="control-label">Khách hàng</label>
+        <input class="form-control" value="@Model.User.UserName" readonly />
+    </div>
+
+    <div class="form-group">
+        <label class="control-label">Rạp</label>
+        <select name="SelectedTheatreId" class="form-control" asp-items="ViewBag.TheatreList"></select>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label">Ngày chiếu</label>
+        <input name="SelectedDate" type="date" class="form-control" value="@Model.Time.ShowingDate?.ToString("yyyy-MM-dd")" />
+    </div>
+
+    <div class="form-group">
+        <label class="control-label">Giờ chiếu</label>
+        <input name="SelectedTime" type="time" class="form-control" value="@Model.Time.ShowingDatetime.ToString(@"hh\:mm")" />
+    </div>
+
+    <div class="form-group">
+        <label class="control-label">Chọn ghế</label>
+        <div class="form-check">
+            @if (ViewBag.SeatList != null && Model.BookingSeats != null)
+            {
+                foreach (var seat in ViewBag.SeatList as List<CMS.Models.Seat>)
+                {
+                    var isChecked = Model.BookingSeats.Any(bs => bs.SeatId == seat.SeatId) ? "checked" : "";
+                    <label class="form-check-label mr-3">
+                        <input type="checkbox" name="SelectedSeatIds" value="@seat.SeatId" @isChecked />
+                        @seat.SeatRow@seat.SeatNumber
+                    </label>
+                }
+            }
+            else
+            {
+                <p>Không có dữ liệu ghế để hiển thị.</p>
+            }
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label">Tổng tiền (VNĐ)</label>
+        <input class="form-control" value="@Model.BookingFee.ToString("N0")" readonly />
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Lưu thay đổi" class="btn btn-primary" />
+        <a href="/BookingManagement/Index" class="btn btn-secondary">Hủy</a>
+    </div>
+</form>
