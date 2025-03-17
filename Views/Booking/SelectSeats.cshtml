@@ -1,0 +1,39 @@
+﻿@model List<CMS.Models.SeatViewModel>
+
+@{
+    ViewBag.Title = "Chọn Ghế";
+    int timeId = ViewBag.TimeId;
+}
+
+<h2>Chọn Ghế</h2>
+
+<form method="post" action="/Booking/ConfirmBooking">
+    <input type="hidden" name="timeId" value="@timeId" />
+
+    <div class="seat-layout">
+        @foreach (var seat in Model)
+        {
+            if (seat.IsBooked)
+            {
+                <button type="button" disabled class="btn btn-danger m-1">@seat.SeatRow@seat.SeatNumber</button>
+            }
+            else
+            {
+                <label>
+                    <input type="checkbox" name="selectedSeatIds" value="@seat.SeatId" />
+                    <span class="btn btn-success m-1">@seat.SeatRow@seat.SeatNumber</span>
+                </label>
+            }
+        }
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Xác nhận ghế</button>
+</form>
+
+<style>
+    .seat-layout {
+        display: flex;
+        flex-wrap: wrap;
+        max-width: 400px;
+    }
+</style>

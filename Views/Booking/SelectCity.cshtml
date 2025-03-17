@@ -1,0 +1,14 @@
+﻿@model List<CMS.Models.CinemaViewModel>
+
+<h2>Chọn Thành phố cho phim</h2>
+
+<ul>
+    @foreach (var city in Model)
+    {
+        <li>
+            <a href="@Url.Action("SelectDate", "Booking", new { movieId = ViewBag.MovieId, cinemaId = city.CinemaId })">
+                @city.CinemaName
+            </a>
+        </li>
+    }
+</ul>

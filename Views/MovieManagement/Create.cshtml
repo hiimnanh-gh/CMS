@@ -1,0 +1,58 @@
+﻿@model CMS.Models.Movie
+@{
+    ViewData["Title"] = "Thêm Phim";
+    var director = ViewBag.Director as CMS.Models.Director;
+}
+
+<h2>Thêm Phim Mới</h2>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+    </div>
+}
+
+<p>Đạo diễn: <strong>@(director?.DirectorName ?? "Không xác định")</strong></p>
+
+<form method="post">
+    <input type="hidden" asp-for="DirectorId" value="@director?.DirectorId" />
+    <input type="hidden" name="StatusId" value="@ViewBag.StatusId" />
+
+    <div class="form-group">
+        <label asp-for="Title">Tiêu đề phim:</label>
+        <input asp-for="Title" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description">Mô tả:</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="AgeRating">Độ tuổi:</label>
+        <input asp-for="AgeRating" type="number" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="RuntimeMin">Thời lượng (phút):</label>
+        <input asp-for="RuntimeMin" type="number" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ReleaseDate">Ngày phát hành:</label>
+        <input asp-for="ReleaseDate" type="date" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="TrailerLink">Link trailer:</label>
+        <input asp-for="TrailerLink" type="url" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Lưu</button>
+</form>

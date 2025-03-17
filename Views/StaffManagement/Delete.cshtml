@@ -1,0 +1,10 @@
+﻿@model CMS.Models.User
+
+<h2>Xóa nhân viên</h2>
+<p>Bạn có chắc chắn muốn xóa nhân viên <strong>@Model.UserName</strong> không?</p>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="UserId" />
+    <button type="submit" class="btn btn-danger">Xóa</button>
+    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+</form>

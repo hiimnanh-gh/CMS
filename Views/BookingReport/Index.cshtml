@@ -1,0 +1,41 @@
+﻿@model List<CMS.Models.BookingReportViewModel>
+
+@{
+    ViewData["Title"] = "Báo cáo đặt vé";
+}
+
+<h2 class="text-2xl font-bold mb-4">Báo cáo đặt vé</h2>
+
+<table class="table-auto w-full border border-gray-300">
+    <thead class="bg-gray-100">
+        <tr>
+            <th class="px-4 py-2 border">Mã Đặt Vé</th>
+            <th class="px-4 py-2 border">Khách Hàng</th>
+            <th class="px-4 py-2 border">Phim</th>
+            <th class="px-4 py-2 border">Rạp</th>
+            <th class="px-4 py-2 border">Phòng</th>
+            <th class="px-4 py-2 border">Ngày Chiếu</th>
+            <th class="px-4 py-2 border">Giờ Chiếu</th>
+            <th class="px-4 py-2 border">Ghế</th>
+            <th class="px-4 py-2 border">Tổng Tiền</th>
+            <th class="px-4 py-2 border">Ngày Đặt</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="px-4 py-2 border text-center">@item.BookingId</td>
+                <td class="px-4 py-2 border">@item.UserName</td>
+                <td class="px-4 py-2 border">@item.MovieName</td>
+                <td class="px-4 py-2 border">@item.CinemaLocation</td>
+                <td class="px-4 py-2 border text-center">Phòng @item.TheatreNum</td>
+                <td class="px-4 py-2 border text-center">@item.ShowingDate?.ToString("dd/MM/yyyy")</td>
+                <td class="px-4 py-2 border text-center">@item.ShowingTime?.ToString(@"hh\:mm")</td>
+                <td class="px-4 py-2 border text-center">@string.Join(", ", item.Seats)</td>
+                <td class="px-4 py-2 border text-right">@item.TotalFee.ToString("N0") đ</td>
+                <td class="px-4 py-2 border text-center">@item.BookingDate.ToString("dd/MM/yyyy HH:mm")</td>
+            </tr>
+        }
+    </tbody>
+</table>

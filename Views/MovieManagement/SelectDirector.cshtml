@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Chọn hoặc Thêm Đạo Diễn";
+}
+
+<h2>Chọn hoặc Thêm Đạo Diễn</h2>
+
+<form asp-action="SelectDirector" method="post">
+    <div class="form-group">
+        <label for="DirectorId">Chọn đạo diễn</label>
+        <select name="DirectorId" class="form-control">
+            <option value="">Chọn đạo diễn</option>
+            @foreach (var director in ViewBag.Directors)
+            {
+                <option value="@director.DirectorId">@director.DirectorName</option>
+            }
+        </select>
+    </div>
+
+    <h4>Hoặc</h4>
+
+    <div class="form-group">
+        <label for="DirectorName">Thêm mới đạo diễn</label>
+        <input type="text" name="DirectorName" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Tiếp tục</button>
+</form>

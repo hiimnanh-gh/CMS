@@ -1,0 +1,95 @@
+﻿@model CMS.Models.Movie
+
+@{
+    ViewData["Title"] = "Chỉnh sửa phim";
+}
+
+<h2>Chỉnh sửa phim</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="MovieId" />
+
+    <!-- Tên phim -->
+    <div class="form-group">
+        <label asp-for="Title">Tên phim</label>
+        <input asp-for="Title" class="form-control" required />
+    </div>
+
+    <!-- Mô tả -->
+    <div class="form-group">
+        <label asp-for="Description">Mô tả</label>
+        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+    </div>
+
+    <!-- Độ tuổi -->
+    <div class="form-group">
+        <label asp-for="AgeRating">Độ tuổi</label>
+        <input asp-for="AgeRating" class="form-control" />
+    </div>
+
+    <!-- Thời lượng -->
+    <div class="form-group">
+        <label asp-for="RuntimeMin">Thời lượng (phút)</label>
+        <input asp-for="RuntimeMin" type="number" class="form-control" />
+    </div>
+
+    <!-- Ngày phát hành -->
+    <div class="form-group">
+        <label asp-for="ReleaseDate">Ngày phát hành</label>
+        <input asp-for="ReleaseDate" type="date" class="form-control" />
+    </div>
+
+    <!-- Trailer -->
+    <div class="form-group">
+        <label asp-for="TrailerLink">Trailer (URL)</label>
+        <input asp-for="TrailerLink" class="form-control" />
+    </div>
+
+    <!-- Banner -->
+    <div class="form-group">
+        <label asp-for="BannerText">Banner</label>
+        <input asp-for="BannerText" class="form-control" />
+    </div>
+
+    <!-- Poster -->
+    <div class="form-group">
+        <label asp-for="PosterImage">Poster</label>
+        <input asp-for="PosterImage" class="form-control" />
+    </div>
+
+    <!-- Nội dung tóm tắt -->
+    <div class="form-group">
+        <label asp-for="Synopsis">Tóm tắt nội dung</label>
+        <textarea asp-for="Synopsis" class="form-control" rows="4"></textarea>
+    </div>
+
+    <!-- Đạo diễn -->
+    <div class="form-group">
+        <label for="DirectorId">Đạo diễn</label>
+        <select asp-for="DirectorId" class="form-control">
+            @foreach (var director in ViewBag.Directors)
+            {
+                <option value="@director.DirectorId" selected="@(Model.DirectorId == director.DirectorId ? "selected" : null)">
+                    @director.DirectorName
+                </option>
+            }
+        </select>
+    </div>
+
+    <!-- Trạng thái phim -->
+    <div class="form-group">
+        <label for="StatusId">Trạng thái</label>
+        <select asp-for="StatusId" class="form-control">
+            @foreach (var status in ViewBag.Statuses)
+            {
+                <option value="@status.StatusId" selected="@(Model.StatusId == status.StatusId ? "selected" : null)">
+                    @status.StatusName
+                </option>
+            }
+        </select>
+    </div>
+
+    <br />
+    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+</form>

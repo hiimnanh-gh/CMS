@@ -1,0 +1,28 @@
+﻿@model List<DateTime?>
+
+<h2>Danh sách ngày chiếu</h2>
+
+<a href="@Url.Action("AddShowingDate", "MovieManagement", new { movieId = ViewBag.MovieId, theatreId = ViewBag.TheatreId })" class="btn btn-primary mb-3">Thêm ngày chiếu</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Ngày chiếu</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var date in Model)
+        {
+            <tr>
+                <td>@(date.HasValue ? date.Value.ToString("dd/MM/yyyy") : "Chưa có ngày chiếu")</td>
+                <td>
+                    @if (date.HasValue)
+                    {
+                        <a href="@Url.Action("DeleteShowingDate", "MovieManagement", new { movieId = ViewBag.MovieId, theatreId = ViewBag.TheatreId, showingDate = date.Value.ToString("yyyy-MM-dd") })" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc muốn xóa ngày chiếu này?');">Xóa</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

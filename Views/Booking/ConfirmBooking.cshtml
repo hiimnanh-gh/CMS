@@ -1,0 +1,21 @@
+﻿@model CMS.Models.BookingConfirmViewModel
+@{
+    ViewBag.Title = "Xác Nhận Đặt Vé";
+}
+
+<h2>Xác Nhận Đặt Vé</h2>
+
+<p>Khách hàng: @Model.UserName</p>
+<p>Phòng chiếu: @Model.TheatreName</p>
+<p>Suất chiếu: @Model.ShowingTime</p>
+<p>Ghế: @string.Join(", ", Model.SeatNumbers)</p>
+<p>Giá vé: @Model.TotalFee.ToString("N0") VND</p>
+
+<form method="post" action="@Url.Action("SaveBooking", "Booking")">
+    <input type="hidden" name="timeId" value="@Model.TimeId" />
+    @foreach (var seatId in Model.SeatIds)
+    {
+        <input type="hidden" name="seatIds" value="@seatId" />
+    }
+    <button type="submit">Xác Nhận Đặt Vé</button>
+</form>

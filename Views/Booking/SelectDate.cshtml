@@ -1,0 +1,18 @@
+﻿@model List<DateTime?>
+@{
+    ViewBag.Title = "Chọn Ngày Chiếu";
+    int movieId = ViewBag.MovieId;
+    int cinemaId = ViewBag.CinemaId;
+}
+
+<h2>Chọn Ngày Chiếu</h2>
+<ul>
+    @foreach (var date in Model)
+    {
+        <li>
+            <a href="@Url.Action("SelectShowTime", "Booking", new { movieId = movieId, cinemaId = cinemaId, showingDate = date?.ToString("yyyy-MM-dd") })">
+                @date?.ToString("dd/MM/yyyy")
+            </a>
+        </li>
+    }
+</ul>

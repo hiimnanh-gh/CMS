@@ -1,0 +1,27 @@
+﻿@model BookingSuccessViewModel
+
+@{
+    ViewData["Title"] = "Đặt vé thành công";
+}
+
+<div class="container mt-5">
+    <h2 class="text-success text-center mb-4">🎉 ĐẶT VÉ THÀNH CÔNG 🎉</h2>
+
+    <div class="card p-4 shadow rounded-3">
+        <h4 class="mb-3">Thông tin chi tiết:</h4>
+
+        <p><strong>Mã đặt vé:</strong> @Model.BookingId</p>
+        <p><strong>Tên khách hàng:</strong> @Model.UserName</p>
+        <p><strong>Ngày đặt vé:</strong> @Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")</p>
+        <p><strong>Phim:</strong> @Model.MovieName</p>
+        <p><strong>Rạp:</strong> @Model.CinemaLocation</p>
+        <p><strong>Phòng chiếu:</strong> Phòng số @Model.TheatreNum</p>
+        <p><strong>Suất chiếu:</strong> @Model.ShowingTime</p>
+        <p><strong>Ghế đã đặt:</strong> @string.Join(", ", Model.Seats)</p>
+        <p><strong>Giá tiền:</strong> @Model.TotalFee.ToString("N0") VNĐ</p>
+
+        <div class="text-center mt-4">
+            <a href="/" class="btn btn-primary">Về trang chủ</a>
+        </div>
+    </div>
+</div>

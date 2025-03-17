@@ -1,0 +1,36 @@
+﻿@model List<CMS.Models.MovieTheatre>
+@{
+    var movie = ViewBag.Movie as CMS.Models.Movie;
+}
+
+<h2>Phòng chiếu đã thêm cho phim: @movie.Title</h2>
+
+<a asp-action="AddTheatreToMovie" asp-route-movieId="@movie.MovieId" class="btn btn-success">Thêm phòng chiếu</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Rạp số</th>
+            <th>Số ghế</th>
+            <th>Quản lý ngày chiếu</th>
+            <th>Xóa</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Theatre.TheatreNum</td>
+                <td>@item.Theatre.AvailableSeats</td>
+                <td>
+                    <a asp-action="ManageShowingDates" asp-route-movieId="@movie.MovieId" asp-route-theatreId="@item.TheatreId" class="btn btn-primary">Quản lý ngày chiếu</a>
+                </td>
+                <td>
+                    <a asp-action="RemoveTheatre" asp-route-movieId="@movie.MovieId" asp-route-theatreId="@item.TheatreId" class="btn btn-danger">Xóa</a>
+                </td>
+            </tr>
+        }
+        <a asp-controller="MovieManagement" asp-action="Index" class="btn btn-secondary">Quay lại</a>
+
+    </tbody>
+</table>

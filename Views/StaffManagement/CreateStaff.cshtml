@@ -1,0 +1,34 @@
+﻿@model CMS.Models.StaffCreateModel
+
+<h2>Thêm Nhân Viên</h2>
+
+<form asp-controller="StaffManagement" asp-action="CreateStaff" method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="mb-3">
+        <label>Họ và Tên:</label>
+        <input asp-for="UserName" class="form-control" />
+        <span asp-validation-for="UserName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label>Email:</label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label>Số điện thoại:</label>
+        <input asp-for="PhoneNum" class="form-control" />
+        <span asp-validation-for="PhoneNum" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label>Mật khẩu:</label>
+        <input asp-for="Password" type="password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Thêm nhân viên</button>
+    <a asp-action="Index" asp-controller="StaffManagement" class="btn btn-secondary">Quay lại danh sách</a>
+</form>

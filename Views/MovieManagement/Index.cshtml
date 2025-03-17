@@ -1,0 +1,38 @@
+﻿@model List<CMS.Models.Movie>
+@{
+    ViewData["Title"] = "Quản lý phim";
+}
+
+<h2>Danh sách phim</h2>
+<a class="btn btn-primary" asp-controller="MovieManagement" asp-action="Create">Thêm phim mới</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Tiêu đề</th>
+            <th>Đạo diễn</th>
+            <th>Trạng thái</th>
+            <th>Ngày phát hành</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var movie in Model)
+        {
+            <tr>
+                <td>@movie.Title</td>
+                <td>@(movie.Director?.DirectorName ?? "Chưa cập nhật")</td>
+                <td>@(movie.Status?.StatusName ?? "Chưa cập nhật")</td>
+                <td>@(movie.ReleaseDate?.ToString("dd/MM/yyyy") ?? "Chưa cập nhật")</td>
+                <td>
+                    <a href="@Url.Action("Details", "Movie", new { id = movie.MovieId })" class="btn btn-info">Chi tiết</a>
+                    <a href="@Url.Action("Edit", "MovieManagement", new { id = movie.MovieId })" class="btn btn-warning">Sửa</a>
+                    <a href="@Url.Action("Delete", "MovieManagement", new { id = movie.MovieId })" class="btn btn-danger">Xóa</a>
+
+					<a href="@Url.Action("ManageTheatres", "MovieManagement", new { movieId = movie.MovieId })" class="btn btn-primary">Quản lý rạp chiếu</a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>

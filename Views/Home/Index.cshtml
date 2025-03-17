@@ -1,0 +1,134 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+<h2 class="text-center">Now Showing</h2>
+
+@{
+    int? roleId = Context.Session.GetInt32("RoleId");
+    var userName = HttpContextAccessor.HttpContext?.Session.GetString("UserName");
+    int currentPage = (int)ViewData["CurrentPage"];
+    int totalPages = (int)ViewData["TotalPages"];
+}
+
+@if (roleId == 1 || roleId == 2)
+{
+    <span>Xin chào, <strong>@userName</strong>!</span>
+
+    <!-- Search Bar -->
+    <form method="get" class="mb-4">
+        <input type="text" name="search" class="form-control" placeholder="Search movies..." value="@ViewData["SearchQuery"]" />
+        <button type="submit" class="btn btn-primary mt-2">Search</button>
+    </form>
+
+    <!-- Movie List -->
+    <div class="row">
+        @foreach (var movie in Model)
+        {
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <!-- Hiển thị ảnh Poster -->
+                    <img src="@movie.PosterImage" class="card-img-top" alt="@movie.Title" style="height: 400px; object-fit: cover;">
+
+                    <div class="card-body">
+                        <h5 class="card-title">@movie.Title</h5>
+                        <p class="card-text"><strong>Director:</strong> @(movie.Director?.DirectorName ?? "Unknown")</p>
+                        <p class="card-text"><strong>Status:</strong> @(movie.Status?.StatusName ?? "Unknown")</p>
+                        <p class="card-text"><strong>Description:</strong> @movie.BannerText</p>
+                        <a href="/Movie/Details/@movie.MovieId" class="btn btn-primary">View Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Pagination Controls -->
+    <nav>
+        <ul class="pagination justify-content-center">
+            @if (currentPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="?search=@ViewData["SearchQuery"]&page=@(currentPage - 1)">Previous</a>
+                </li>
+            }
+            @for (int i = 1; i <= totalPages; i++)
+            {
+                <li class="page-item @(i == currentPage ? "active" : "")">
+                    <a class="page-link" href="?search=@ViewData["SearchQuery"]&page=@i">@i</a>
+                </li>
+            }
+            @if (currentPage < totalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="?search=@ViewData["SearchQuery"]&page=@(currentPage + 1)">Next</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}
+else if (roleId == 3)
+{
+    <span>Xin chào, <strong>@userName</strong>!</span>
+
+    <!-- Search Bar -->
+    <form method="get" class="mb-4">
+        <input type="text" name="search" class="form-control" placeholder="Search movies..." value="@ViewData["SearchQuery"]" />
+        <button type="submit" class="btn btn-primary mt-2">Search</button>
+    </form>
+
+    <!-- Movie List -->
+    <div class="row">
+        @foreach (var movie in Model)
+        {
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <!-- Hiển thị ảnh Poster -->
+                    <img src="@movie.PosterImage" class="card-img-top" alt="@movie.Title" style="height: 400px; object-fit: cover;">
+
+                    <div class="card-body">
+                        <h5 class="card-title">@movie.Title</h5>
+                        <p class="card-text"><strong>Director:</strong> @(movie.Director?.DirectorName ?? "Unknown")</p>
+                        <p class="card-text"><strong>Status:</strong> @(movie.Status?.StatusName ?? "Unknown")</p>
+                        <p class="card-text"><strong>Description:</strong> @movie.BannerText</p>
+                        <a href="/Movie/Details/@movie.MovieId" class="btn btn-primary">View Details</a>
+                        <a href="/Booking/SelectCity?movieId=@movie.MovieId" class="btn btn-primary">Book Now</a>
+
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Pagination Controls -->
+    <nav>
+        <ul class="pagination justify-content-center">
+            @if (currentPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="?search=@ViewData["SearchQuery"]&page=@(currentPage - 1)">Previous</a>
+                </li>
+            }
+            @for (int i = 1; i <= totalPages; i++)
+            {
+                <li class="page-item @(i == currentPage ? "active" : "")">
+                    <a class="page-link" href="?search=@ViewData["SearchQuery"]&page=@i">@i</a>
+                </li>
+            }
+            @if (currentPage < totalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="?search=@ViewData["SearchQuery"]&page=@(currentPage + 1)">Next</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}
+
+
+
+
+
+else
+{
+    <span>Xin chào, khách hàng ẩn danh!</span>
+}

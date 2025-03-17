@@ -1,0 +1,72 @@
+﻿@model CMS.Models.Movie
+
+@{
+    ViewData["Title"] = "Chi tiết phim";
+}
+
+<h2>Chi tiết phim</h2>
+
+<div class="form-group">
+    <label>Tên phim:</label>
+    <p>@Model.Title</p>
+</div>
+
+<div class="form-group">
+    <label>Mô tả:</label>
+    <p>@Model.Description</p>
+</div>
+
+<div class="form-group">
+    <label>Độ tuổi:</label>
+    <p>@Model.AgeRating</p>
+</div>
+
+<div class="form-group">
+    <label>Thời lượng (phút):</label>
+    <p>@Model.RuntimeMin</p>
+</div>
+
+<div class="form-group">
+    <label>Ngày phát hành:</label>
+    <p>@Model.ReleaseDate?.ToString("dd/MM/yyyy")</p>
+</div>
+
+<div class="form-group">
+    <label>Trailer (URL):</label>
+    <p><a href="@Model.TrailerLink" target="_blank">@Model.TrailerLink</a></p>
+</div>
+
+<div class="form-group">
+    <label>Banner:</label>
+    <p>@Model.BannerText</p>
+</div>
+
+<div class="form-group">
+    <label>Poster:</label>
+    @if (!string.IsNullOrEmpty(Model.PosterImage))
+    {
+        <img src="@Model.PosterImage" alt="Poster" style="max-width: 200px;" />
+    }
+    else
+    {
+        <p>Không có poster</p>
+    }
+</div>
+
+<div class="form-group">
+    <label>Tóm tắt nội dung:</label>
+    <p>@Model.Synopsis</p>
+</div>
+
+<div class="form-group">
+    <label>Đạo diễn:</label>
+    <p>@Model.Director?.DirectorName</p>
+</div>
+
+<div class="form-group">
+    <label>Trạng thái:</label>
+    <p>@Model.Status?.StatusName</p>
+</div>
+
+<br />
+<a asp-action="Index" class="btn btn-secondary">Quay lại</a>

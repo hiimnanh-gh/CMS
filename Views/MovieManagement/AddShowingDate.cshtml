@@ -1,0 +1,19 @@
+﻿@{
+    var movie = ViewBag.Movie as CMS.Models.Movie;
+    var theatre = ViewBag.Theatre as CMS.Models.Theatre;
+}
+
+<h2>Thêm ngày chiếu cho Rạp số: @theatre.TheatreNum - Phim: @movie.Title</h2>
+
+<form method="post">
+    <input type="hidden" name="movieId" value="@movie.MovieId" />
+    <input type="hidden" name="theatreId" value="@theatre.TheatreId" />
+
+    <div class="form-group">
+        <label>Chọn ngày chiếu</label>
+        <input type="date" name="showingDate" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-success">Thêm ngày chiếu</button>
+    <a asp-action="ManageShowingDates" asp-route-movieId="@movie.MovieId" asp-route-theatreId="@theatre.TheatreId" class="btn btn-secondary">Quay lại</a>
+</form>

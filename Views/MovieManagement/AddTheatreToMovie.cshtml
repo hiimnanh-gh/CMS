@@ -1,0 +1,23 @@
+﻿@model List<CMS.Models.Theatre>
+@{
+    var movie = ViewBag.Movie as CMS.Models.Movie;
+}
+
+<h2>Thêm phòng chiếu cho phim: @movie.Title</h2>
+
+<form method="post">
+    <input type="hidden" name="movieId" value="@movie.MovieId" />
+
+    <div class="form-group">
+        <label>Chọn phòng chiếu</label>
+        <select name="theatreId" class="form-control">
+            @foreach (var theatre in Model)
+            {
+                <option value="@theatre.TheatreId">Rạp số: @theatre.TheatreNum (Số ghế: @theatre.AvailableSeats)</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-success">Thêm phòng chiếu</button>
+    <a asp-action="ManageTheatres" asp-route-movieId="@movie.MovieId" class="btn btn-secondary">Quay lại</a>
+</form>
