@@ -1,21 +1,77 @@
 ﻿@model CMS.Models.BookingConfirmViewModel
 @{
-    ViewBag.Title = "Xác Nhận Đặt Vé";
+    ViewBag.Title = "Confirm Booking";
 }
 
-<h2>Xác Nhận Đặt Vé</h2>
+<div class="container mt-4">
+    <h2 class="text-center text-warning">Confirm Your Booking</h2>
 
-<p>Khách hàng: @Model.UserName</p>
-<p>Phòng chiếu: @Model.TheatreName</p>
-<p>Suất chiếu: @Model.ShowingTime</p>
-<p>Ghế: @string.Join(", ", Model.SeatNumbers)</p>
-<p>Giá vé: @Model.TotalFee.ToString("N0") VND</p>
+    <div class="card shadow-lg p-4 mt-3" style="background-color: rgba(0, 0, 0, 0.85); color: white; border-radius: 12px;">
+        <div class="card-body">
+            <p><strong>🙋 Customer:</strong> <span class="text-info">@Model.UserName</span></p>
+            <p><strong>🏠 Theatre Room:</strong> <span class="text-light">@Model.TheatreName</span></p>
+            <p><strong>⏰ Showtime:</strong> <span class="text-light">@Model.ShowingTime</span></p>
+            <p><strong>💺 Seats:</strong> <span class="text-success">@string.Join(", ", Model.SeatNumbers)</span></p>
+            <p><strong>💰 Ticket Price:</strong> <span class="text-danger">@Model.TotalFee.ToString("N0") VND</span></p>
 
-<form method="post" action="@Url.Action("SaveBooking", "Booking")">
-    <input type="hidden" name="timeId" value="@Model.TimeId" />
-    @foreach (var seatId in Model.SeatIds)
-    {
-        <input type="hidden" name="seatIds" value="@seatId" />
+            <form method="post" action="@Url.Action("SaveBooking", "Booking")">
+                <input type="hidden" name="timeId" value="@Model.TimeId" />
+                @foreach (var seatId in Model.SeatIds)
+                {
+                    <input type="hidden" name="seatIds" value="@seatId" />
+                }
+                <div class="text-center mt-3">
+                    <button type="submit" class="btn btn-success me-2"><i class="fas fa-check-circle"></i> Confirm Booking</button>
+                    <a href="@Url.Action("SelectSeats", "Booking", new { timeId = Model.TimeId })" class="btn btn-danger">
+                        <i class="fas fa-arrow-left"></i> Change Seats
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #121212;
+        color: #e0e0e0;
     }
-    <button type="submit">Xác Nhận Đặt Vé</button>
-</form>
+
+    .container {
+        background-color: #1c1c1c;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    h2 {
+        color: #ff9800;
+    }
+
+    .card {
+        background-color: rgba(0, 0, 0, 0.85);
+        color: white;
+        border-radius: 12px;
+    }
+
+    .btn {
+        background-color: #4caf50;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+    .btn-danger {
+        background-color: #dc3545;
+    }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+</style>

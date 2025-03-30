@@ -1,0 +1,179 @@
+﻿@model CMS.Models.MovieListViewModel
+
+@{
+    ViewBag.Title = "Movie List";
+}
+
+<div class="container mt-4">
+    <h2 class="text-light text-center mb-4">🎬 Movie List</h2>
+
+    <form method="get" asp-action="Index" class="mb-4">
+        <div class="row g-3 align-items-center">
+            <div class="col-md-4">
+                <input type="text" name="searchString" value="@Model.SearchKeyword" class="form-control" placeholder="🔍 Search for a movie..." />
+            </div>
+            <div class="col-md-3">
+                <select name="statusId" class="form-select">
+                    <option value="">-- Filter by Status --</option>
+                    @foreach (var status in Model.Statuses)
+                    {
+                        <option value="@status.StatusId" selected="@(Model.SelectedStatusId == status.StatusId ? "selected" : "")">
+                            @status.StatusName
+                        </option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-filter"></i> Filter Movies</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered align-middle">
+            <thead class="table-dark text-center">
+                <tr>
+                    <th>Poster</th>
+                    <th>Title</th>
+                    <th>Genres</th>
+                    <th>Release Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var movie in Model.Movies)
+                {
+                    <tr>
+                        <td class="text-center">
+                            <img src="@movie.PosterImage" alt="@movie.Title" class="img-thumbnail" style="width: 80px; height: auto;" />
+                        </td>
+                        <td class="fw-bold">@movie.Title</td>
+                        <td>
+                            @foreach (var genre in movie.MovieGenres)
+                            {
+                                <span class="badge bg-secondary">@genre.Genre.GenreName</span>
+                            }
+                        </td>
+                        <td>@movie.ReleaseDate?.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            <span class="badge @(movie.Status?.StatusId == 1 ? "bg-success" : "bg-warning")">
+                                @movie.Status?.StatusName
+                            </span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    /* Global Background and Text Colors */
+    body {
+        background-color: #212529; /* Dark background */
+        color: #f8f9fa; /* Light text */
+    }
+
+    /* Container Styling */
+    .container {
+        background-color: #343a40; /* Slightly lighter dark background */
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Header Styling */
+    h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #f8f9fa; /* Light text color */
+    }
+    td {
+        color:white;
+    }
+    /* Form Styling */
+    form {
+        margin-bottom: 20px;
+    }
+
+    .form-control,
+    .form-select {
+        border-radius: 8px;
+        padding: 10px;
+        background-color: #495057; /* Darker input fields */
+        color: #f8f9fa; /* Light text inside inputs */
+        border: 1px solid #ced4da;
+    }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #80bdff;
+            background-color: #6c757d; /* Slightly lighter on focus */
+        }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: 600;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    /* Table Styling */
+    .table {
+        width: 100%;
+        margin-top: 20px;
+        font-size: 1rem;
+        background-color: #343a40; /* Dark background for table */
+    }
+
+        .table th,
+        .table td {
+            padding: 12px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .table th {
+            background-color: #495057; /* Darker headers */
+            color: #f8f9fa; /* Light text color */
+        }
+
+    /* Row hover effect */
+    .table-hover tbody tr:hover {
+        background-color: #6c757d; /* Slightly lighter grey on hover */
+    }
+
+    /* Movie poster styling */
+    .img-thumbnail {
+        border: none;
+        max-width: 80px;
+        height: auto;
+    }
+
+    /* Badge Styling for Genres and Status */
+    .badge {
+        font-size: 0.9rem;
+        padding: 5px 10px;
+        border-radius: 5px;
+        margin: 2px;
+    }
+
+        .badge.bg-secondary {
+            background-color: #6c757d;
+        }
+
+        .badge.bg-success {
+            background-color: #28a745;
+        }
+
+        .badge.bg-warning {
+            background-color: #ffc107;
+        }
+
+    
+</style>

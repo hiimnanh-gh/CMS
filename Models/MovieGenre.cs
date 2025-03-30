@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CMS.Models;
 
-[Keyless]
 [Table("movie_genre")]
 public partial class MovieGenre
 {
@@ -16,9 +15,10 @@ public partial class MovieGenre
     [Column("genre_id")]
     public int GenreId { get; set; }
 
-    [ForeignKey("GenreId")]
-    public virtual Genre Genre { get; set; } = null!;
-
     [ForeignKey("MovieId")]
     public virtual Movie Movie { get; set; } = null!;
+
+    [ForeignKey("GenreId")]
+    public virtual Genre Genre { get; set; } = null!;
 }
+

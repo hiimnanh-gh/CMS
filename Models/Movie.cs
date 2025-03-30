@@ -52,9 +52,7 @@ public partial class Movie
     public string? BannerText { get; set; }
 
     [Column("poster_image")]
-    [StringLength(255)]
-    [Unicode(false)]
-    public string? PosterImage { get; set; }
+    public string? PosterImage { get; set; } // Lưu đường dẫn ảnh
 
     [Column("synopsis", TypeName = "text")]
     public string? Synopsis { get; set; }
@@ -72,7 +70,15 @@ public partial class Movie
     [NotMapped]
     public string? DirectorName { get; set; }
 
+    [NotMapped] // Không lưu vào DB
+    public IFormFile? PosterFile { get; set; }
 
+
+    // Liên kết với MovieGenre
+    public virtual ICollection<MovieGenre> MovieGenres { get; set; } = new List<MovieGenre>();
+
+    // Liên kết với MovieTheatre
     public virtual ICollection<MovieTheatre> MovieTheatres { get; set; } = new List<MovieTheatre>();
+
 
 }

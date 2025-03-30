@@ -1,34 +1,143 @@
 ﻿@model CMS.Models.StaffCreateModel
 
-<h2>Thêm Nhân Viên</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Staff</title>
+    <link rel="stylesheet" href="~/css/styles.css" />
+    <style>
+        /* General body and background */
+        body {
+            background-color: #121212; /* Dark background */
+            color: #e0e0e0; /* Light text */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
 
-<form asp-controller="StaffManagement" asp-action="CreateStaff" method="post">
-    @Html.AntiForgeryToken()
+        /* Form container */
+        .form-container {
+            background-color: #1c1c1c;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            width: 400px;
+            margin: 50px auto;
+        }
 
-    <div class="mb-3">
-        <label>Họ và Tên:</label>
-        <input asp-for="UserName" class="form-control" />
-        <span asp-validation-for="UserName" class="text-danger"></span>
+        /* Label and input field styling */
+        .form-control {
+            background-color: #2c2c2c;
+            color: #e0e0e0;
+            border: 1px solid #444;
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+
+            .form-control:focus {
+                border-color: #007bff;
+                background-color: #333;
+                color: #e0e0e0;
+            }
+
+        /* Button styling */
+        .btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+        }
+
+            .btn-success:hover {
+                background-color: #218838;
+            }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: #fff;
+            border: none;
+        }
+
+            .btn-secondary:hover {
+                background-color: #5a6268;
+            }
+
+        /* Header styling */
+        h2 {
+            font-size: 2rem;
+            color: #ff4d4d; /* Red color for title */
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Error message styling */
+        .text-danger {
+            color: #ff4d4d;
+        }
+
+        /* Adjustments for form layout */
+        .mb-3 {
+            margin-bottom: 1.5rem;
+        }
+
+        /* Link styling */
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+            a:hover {
+                text-decoration: underline;
+            }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Add Staff</h2>
+
+        <form asp-controller="StaffManagement" asp-action="CreateStaff" method="post">
+            @Html.AntiForgeryToken()
+
+            <div class="mb-3">
+                <label>Full Name:</label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label>Email:</label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label>Phone Number:</label>
+                <input asp-for="PhoneNum" class="form-control" />
+                <span asp-validation-for="PhoneNum" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label>Password:</label>
+                <input asp-for="Password" type="password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-success">Add Staff</button>
+            <a asp-action="Index" asp-controller="StaffManagement" class="btn btn-secondary">Back to List</a>
+        </form>
     </div>
 
-    <div class="mb-3">
-        <label>Email:</label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label>Số điện thoại:</label>
-        <input asp-for="PhoneNum" class="form-control" />
-        <span asp-validation-for="PhoneNum" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label>Mật khẩu:</label>
-        <input asp-for="Password" type="password" class="form-control" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-success">Thêm nhân viên</button>
-    <a asp-action="Index" asp-controller="StaffManagement" class="btn btn-secondary">Quay lại danh sách</a>
-</form>
+</body>
+</html>

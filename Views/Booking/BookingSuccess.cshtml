@@ -1,27 +1,96 @@
 ﻿@model BookingSuccessViewModel
 
 @{
-    ViewData["Title"] = "Đặt vé thành công";
+    ViewData["Title"] = "Booking Successful";
 }
 
 <div class="container mt-5">
-    <h2 class="text-success text-center mb-4">🎉 ĐẶT VÉ THÀNH CÔNG 🎉</h2>
+    <div class="text-center">
+        <h2 class="text-warning fw-bold">🎉 Booking Successful 🎉</h2>
+        <p class="text-light">Thank you for booking with us!</p>
+    </div>
 
-    <div class="card p-4 shadow rounded-3">
-        <h4 class="mb-3">Thông tin chi tiết:</h4>
+    <div class="card p-4 shadow-lg rounded-3 mt-4 mx-auto text-light" style="max-width: 600px; background: rgba(0, 0, 0, 0.85); border: 1px solid #f44336;">
+        <div class="card-body">
+            <h4 class="mb-3 text-danger fw-bold">🎬 Booking Details:</h4>
 
-        <p><strong>Mã đặt vé:</strong> @Model.BookingId</p>
-        <p><strong>Tên khách hàng:</strong> @Model.UserName</p>
-        <p><strong>Ngày đặt vé:</strong> @Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")</p>
-        <p><strong>Phim:</strong> @Model.MovieName</p>
-        <p><strong>Rạp:</strong> @Model.CinemaLocation</p>
-        <p><strong>Phòng chiếu:</strong> Phòng số @Model.TheatreNum</p>
-        <p><strong>Suất chiếu:</strong> @Model.ShowingTime</p>
-        <p><strong>Ghế đã đặt:</strong> @string.Join(", ", Model.Seats)</p>
-        <p><strong>Giá tiền:</strong> @Model.TotalFee.ToString("N0") VNĐ</p>
+            <ul class="list-group">
+                <li class="list-group-item bg-transparent text-light border-bottom"><strong>📌 Booking ID:</strong> @Model.BookingId</li>
+                <li class="list-group-item bg-transparent text-light border-bottom"><strong>🙋 Customer Name:</strong> @Model.UserName</li>
+                <li class="list-group-item bg-transparent text-light border-bottom"><strong>📅 Booking Date:</strong> @Model.BookingDate.ToString("dd/MM/yyyy")</li>
+                <li class="list-group-item bg-transparent text-light border-bottom"><strong>🎥 Movie:</strong> @Model.MovieName</li>
+                <li class="list-group-item bg-transparent text-light border-bottom"><strong>🏢 Cinema:</strong> @Model.CinemaLocation</li>
+                <li class="list-group-item bg-transparent text-light border-bottom"><strong>🏠 Theatre Room:</strong> @Model.TheatreNum</li>
+                <li class="list-group-item bg-transparent text-light border-bottom"><strong>📅 Show Date:</strong> @Model.ShowingDate.ToString("dd/MM/yyyy")</li>
+                <li class="list-group-item bg-transparent text-light border-bottom"><strong>⏰ Showtime:</strong> @Model.ShowingTime.ToString(@"hh\:mm")</li>
+                <li class="list-group-item bg-transparent text-light border-bottom"><strong>💺 Booked Seats:</strong> @string.Join(", ", Model.Seats)</li>
+                <li class="list-group-item bg-transparent text-warning border-bottom"><strong>💰 Total Price:</strong> @Model.TotalFee.ToString("N0") VND</li>
+            </ul>
 
-        <div class="text-center mt-4">
-            <a href="/" class="btn btn-primary">Về trang chủ</a>
+            <div class="text-center mt-4">
+                <a href="/" class="btn btn-danger px-4 py-2"><i class="fas fa-home"></i> Return Home</a>
+                <a href="@Url.Action("Index", "Booking")" class="btn btn-outline-light px-4 py-2"><i class="fas fa-ticket-alt"></i> Book Another</a>
+            </div>
         </div>
     </div>
 </div>
+
+<style>
+    body {
+        background-color: #121212; /* Nền tối */
+        color: #e0e0e0; /* Chữ sáng */
+    }
+
+    .container {
+        background-color: #1c1c1c; /* Nền tối cho container */
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    h2 {
+        color: #ff9800; /* Màu chữ tiêu đề sáng */
+    }
+
+    .card {
+        background: rgba(0, 0, 0, 0.85); /* Nền tối cho card */
+        border: 1px solid #f44336; /* Đỏ cho viền card */
+    }
+
+    .list-group-item {
+        border: none;
+        font-size: 16px;
+        color: #e0e0e0; /* Chữ sáng trong các mục */
+    }
+
+        .list-group-item strong {
+            color: #ffffff; /* Chữ đậm nổi bật */
+        }
+
+    .text-light {
+        color: #e0e0e0 !important; /* Chữ sáng cho các đoạn văn bản */
+    }
+
+    .btn {
+        transition: transform 0.2s ease-in-out;
+    }
+
+        .btn:hover {
+            transform: scale(1.05); /* Hiệu ứng hover cho nút */
+        }
+
+    .btn-danger {
+        background-color: #f44336;
+        border-color: #f44336;
+    }
+
+    .btn-outline-light {
+        border-color: #ffffff;
+        color: #ffffff;
+    }
+
+        .btn-outline-light:hover {
+            background-color: #ffffff;
+            color: #121212;
+        }
+</style>

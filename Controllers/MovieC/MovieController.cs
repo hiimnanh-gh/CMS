@@ -21,6 +21,8 @@ namespace CMS.Controllers.MovieC
             var movie = _dbc.Movies
                 .Include(m => m.Director)
                 .Include(m => m.Status)
+                .Include(m => m.MovieGenres) // Nạp MovieGenres
+                    .ThenInclude(mg => mg.Genre) // Nạp Genre từ MovieGenres
                 .FirstOrDefault(m => m.MovieId == id);
 
             if (movie == null)
@@ -30,5 +32,8 @@ namespace CMS.Controllers.MovieC
 
             return View(movie);
         }
+
+
+
     }
 }

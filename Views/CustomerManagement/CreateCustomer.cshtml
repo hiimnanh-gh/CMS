@@ -1,34 +1,104 @@
 ﻿@model CMS.Models.CustomerCreateModel
 
-<h2>Thêm Khách hàng</h2>
+@{
+    ViewData["Title"] = "Add Customer";
+}
 
-<form asp-controller="CustomerManagement" asp-action="CreateCustomer" method="post">
-    @Html.AntiForgeryToken()
+<div class="container mt-4">
+    <h2 class="text-warning text-center">@ViewData["Title"]</h2>
 
-    <div class="mb-3">
-        <label>Họ và Tên:</label>
-        <input asp-for="UserName" class="form-control" />
-        <span asp-validation-for="UserName" class="text-danger"></span>
-    </div>
+    <form asp-controller="CustomerManagement" asp-action="CreateCustomer" method="post">
+        @Html.AntiForgeryToken()
 
-    <div class="mb-3">
-        <label>Email:</label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
+        <!-- Full Name -->
+        <div class="mb-3">
+            <label for="UserName" class="text-light">Full Name:</label>
+            <input asp-for="UserName" class="form-control" />
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
 
-    <div class="mb-3">
-        <label>Số điện thoại:</label>
-        <input asp-for="PhoneNum" class="form-control" />
-        <span asp-validation-for="PhoneNum" class="text-danger"></span>
-    </div>
+        <!-- Email -->
+        <div class="mb-3">
+            <label for="Email" class="text-light">Email:</label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
 
-    <div class="mb-3">
-        <label>Mật khẩu:</label>
-        <input asp-for="Password" type="password" class="form-control" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
+        <!-- Phone Number -->
+        <div class="mb-3">
+            <label for="PhoneNum" class="text-light">Phone Number:</label>
+            <input asp-for="PhoneNum" class="form-control" />
+            <span asp-validation-for="PhoneNum" class="text-danger"></span>
+        </div>
 
-    <button type="submit" class="btn btn-success">Thêm khách hàng</button>
-    <a asp-action="Index" asp-controller="CustomerManagement" class="btn btn-secondary">Quay lại danh sách</a>
-</form>
+        <!-- Password -->
+        <div class="mb-3">
+            <label for="Password" class="text-light">Password:</label>
+            <input asp-for="Password" type="password" class="form-control" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <!-- Submit and Back Buttons -->
+        <button type="submit" class="btn btn-success">Add Customer</button>
+        <a asp-action="Index" asp-controller="CustomerManagement" class="btn btn-secondary">Back to List</a>
+    </form>
+</div>
+
+<style>
+    body {
+        background-color: #121212; /* Dark background */
+        color: #e0e0e0; /* Light text color */
+    }
+
+    .container {
+        background-color: #1c1c1c; /* Dark background for container */
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    h2 {
+        color: #ff9800; /* Bright orange for title */
+    }
+
+    .form-control {
+        background-color: #2c2c2c; /* Dark background for inputs */
+        color: #e0e0e0; /* Light text color */
+        border: 1px solid #444; /* Subtle border */
+    }
+
+        .form-control:focus {
+            background-color: #333; /* Darken input on focus */
+            border-color: #ff9800; /* Highlight border on focus */
+        }
+
+    label {
+        color: #ffffff; /* Light label text */
+    }
+
+    .btn {
+        transition: transform 0.2s ease-in-out;
+    }
+
+        .btn:hover {
+            transform: scale(1.05); /* Button hover effect */
+        }
+
+    .btn-success {
+        background-color: #4CAF50;
+        border-color: #4CAF50;
+    }
+
+    .btn-secondary {
+        background-color: #2c2c2c;
+        border-color: #444;
+    }
+
+        .btn-secondary:hover {
+            background-color: #444;
+        }
+
+    .text-danger {
+        color: #f44336 !important; /* Red text for validation errors */
+    }
+</style>

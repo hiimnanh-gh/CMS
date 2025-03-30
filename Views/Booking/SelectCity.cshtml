@@ -1,14 +1,35 @@
 ﻿@model List<CMS.Models.CinemaViewModel>
 
-<h2>Chọn Thành phố cho phim</h2>
+@{
+    ViewData["Title"] = "Select City";
+}
 
-<ul>
-    @foreach (var city in Model)
-    {
-        <li>
-            <a href="@Url.Action("SelectDate", "Booking", new { movieId = ViewBag.MovieId, cinemaId = city.CinemaId })">
-                @city.CinemaName
-            </a>
-        </li>
+<div class="container mt-5">
+    <h2 class="text-center text-light mb-4">🌆 Select City for Movie</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="list-group shadow">
+                @foreach (var city in Model)
+                {
+                    <a href="@Url.Action("SelectDate", "Booking", new { movieId = ViewBag.MovieId, cinemaId = city.CinemaId })"
+                       class="list-group-item list-group-item-action text-center fw-bold py-3"
+                       style="background-color: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2);">
+                        @city.CinemaName
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #121212;
+        color: #fff;
     }
-</ul>
+
+    .list-group-item:hover {
+        background-color: rgba(255, 255, 255, 0.2) !important;
+        color: #fff !important;
+    }
+</style>

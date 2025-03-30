@@ -1,41 +1,264 @@
 ﻿@model List<CMS.Models.BookingReportViewModel>
 
 @{
-    ViewData["Title"] = "Báo cáo đặt vé";
+    ViewData["Title"] = "Booking Report";
+    var sortBy = Context.Request.Query["sortBy"];
+    var sortOrder = Context.Request.Query["sortOrder"] == "asc" ? "desc" : "asc";
+
+    // Lưu danh sách tất cả bookings trước khi lọc
+    var allBookings = Model;
+
+    // Tính tổng doanh thu từ tất cả bookings
+    var totalRevenueByCinema = allBookings
+        .GroupBy(b => b.CinemaLocation)
+        .Select(g => new { Cinema = g.Key, TotalRevenue = g.Sum(b => b.TotalFee) })
+        .ToList();
+
+    var totalAllRevenue = totalRevenueByCinema.Sum(c => c.TotalRevenue);
+
+    // Lọc dữ liệu chỉ để hiển thị
+    var filteredBookings = Model.AsQueryable();
+    if (!string.IsNullOrEmpty(Context.Request.Query["movieId"]))
+    {
+        var movieId = int.Parse(Context.Request.Query["movieId"]);
+        filteredBookings = filteredBookings.Where(b => b.MovieId == movieId);
+    }
+    if (!string.IsNullOrEmpty(Context.Request.Query["cinemaId"]))
+    {
+        var cinemaId = int.Parse(Context.Request.Query["cinemaId"]);
+        filteredBookings = filteredBookings.Where(b => b.CinemaId == cinemaId);
+    }
+
+    var bookingsToShow = filteredBookings.ToList();
 }
 
-<h2 class="text-2xl font-bold mb-4">Báo cáo đặt vé</h2>
+<div class="container mx-auto p-4 bg-gray-900 text-white rounded-lg shadow-lg">
+    <h2 class="text-3xl font-bold text-center mb-6">@ViewData["Title"]</h2>
 
-<table class="table-auto w-full border border-gray-300">
-    <thead class="bg-gray-100">
-        <tr>
-            <th class="px-4 py-2 border">Mã Đặt Vé</th>
-            <th class="px-4 py-2 border">Khách Hàng</th>
-            <th class="px-4 py-2 border">Phim</th>
-            <th class="px-4 py-2 border">Rạp</th>
-            <th class="px-4 py-2 border">Phòng</th>
-            <th class="px-4 py-2 border">Ngày Chiếu</th>
-            <th class="px-4 py-2 border">Giờ Chiếu</th>
-            <th class="px-4 py-2 border">Ghế</th>
-            <th class="px-4 py-2 border">Tổng Tiền</th>
-            <th class="px-4 py-2 border">Ngày Đặt</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+    <div class="flex justify-between items-center mb-4">
+        <form method="get" class="flex flex-wrap gap-4">
+            <select name="movieId" class="p-2 bg-gray-800 text-white rounded">
+                <option value="">Chọn phim</option>
+                @foreach (var movie in ViewBag.Movies)
+                {
+                    <option value="@movie.MovieId">@movie.Title</option>
+                }
+            </select>
+
+            <select name="cinemaId" class="p-2 bg-gray-800 text-white rounded">
+                <option value="">Chọn rạp</option>
+                @foreach (var cinema in ViewBag.Cinemas)
+                {
+                    <option value="@cinema.CinemaId">@cinema.CinemaName</option>
+                }
+            </select>
+
+            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Lọc</button>
+        </form>
+
+        <div class="revenue-summary">
+            <h3 class="text-xl font-bold text-yellow-400">Tổng Doanh Thu</h3>
+            <p class="text-2xl font-semibold mb-3">@totalAllRevenue.ToString("N0") VND</p>
+            <table class="w-full border border-gray-600 text-sm">
+                <thead class="bg-gray-700">
+                    <tr>
+                        <th class="px-4 py-2 border-b">Cinema</th>
+                        <th class="px-4 py-2 border-b">Revenue (VND)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var cinema in totalRevenueByCinema)
+                    {
+                        <tr>
+                            <td class="px-4 py-2">@cinema.Cinema</td>
+                            <td class="px-4 py-2">@cinema.TotalRevenue.ToString("N0") VND</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <table class="table-auto w-full border border-gray-600 text-sm text-left">
+        <thead class="bg-gray-800">
             <tr>
-                <td class="px-4 py-2 border text-center">@item.BookingId</td>
-                <td class="px-4 py-2 border">@item.UserName</td>
-                <td class="px-4 py-2 border">@item.MovieName</td>
-                <td class="px-4 py-2 border">@item.CinemaLocation</td>
-                <td class="px-4 py-2 border text-center">Phòng @item.TheatreNum</td>
-                <td class="px-4 py-2 border text-center">@item.ShowingDate?.ToString("dd/MM/yyyy")</td>
-                <td class="px-4 py-2 border text-center">@item.ShowingTime?.ToString(@"hh\:mm")</td>
-                <td class="px-4 py-2 border text-center">@string.Join(", ", item.Seats)</td>
-                <td class="px-4 py-2 border text-right">@item.TotalFee.ToString("N0") đ</td>
-                <td class="px-4 py-2 border text-center">@item.BookingDate.ToString("dd/MM/yyyy HH:mm")</td>
+                <th class="px-4 py-2 border-b">Booking ID</th>
+                <th class="px-4 py-2 border-b">Customer</th>
+                <th class="px-4 py-2 border-b">
+                    <a href="?sortBy=MovieName&sortOrder=@sortOrder" class="hover:underline">Movie</a>
+                </th>
+                <th class="px-4 py-2 border-b">
+                    <a href="?sortBy=Cinema&sortOrder=@sortOrder" class="hover:underline">Cinema</a>
+                </th>
+                <th class="px-4 py-2 border-b">Theatre</th>
+                <th class="px-4 py-2 border-b">Showing Date</th>
+                <th class="px-4 py-2 border-b">Showing Time</th>
+                <th class="px-4 py-2 border-b">Seats</th>
+                <th class="px-4 py-2 border-b">
+                    <a href="?sortBy=TotalFee&sortOrder=@sortOrder" class="hover:underline">Total Fee</a>
+                </th>
             </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in bookingsToShow)
+            {
+                <tr>
+                    <td>@item.BookingId</td>
+                    <td>@item.UserName</td>
+                    <td>@item.MovieName</td>
+                    <td>@item.CinemaLocation</td>
+                    <td>Theatre @item.TheatreNum</td>
+                    <td>@item.ShowingDate?.ToString("dd/MM/yyyy")</td>
+                    <td>@item.ShowingTime?.ToString(@"hh\:mm")</td>
+                    <td>@string.Join(", ", item.Seats)</td>
+                    <td>@item.TotalFee.ToString("N0") VND</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .revenue-summary {
+        background-color: #2c2c2c;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-align: center;
+        min-width: 200px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Đảm bảo row chứa bộ lọc + tổng doanh thu được căn chỉnh ngang hàng */
+    .flex {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+
+    /* Toàn bộ trang nền tối */
+    body {
+        background-color: #121212;
+        color: #f8f9fa;
+    }
+
+    /* Container chính */
+    .container {
+        background-color: #1e1e1e;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Tiêu đề */
+    h2, h3 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #ff4d4d;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    /* Dropdown */
+    select {
+        background-color: #2c2c2c;
+        color: #f8f9fa;
+        border: 1px solid #444;
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        select:hover {
+            background-color: #3a3a3a;
         }
-    </tbody>
-</table>
+
+    /* Nút lọc */
+    button {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+    /* Bảng */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-size: 1rem;
+    }
+
+    /* Header của bảng */
+    thead {
+        background-color: #343a40;
+        color: white;
+    }
+
+        thead th {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 2px solid #ff4d4d;
+        }
+
+    /* Các dòng trong bảng */
+    tbody tr {
+        background-color: #222;
+        transition: background 0.3s;
+    }
+
+        tbody tr:hover {
+            background-color: #333;
+        }
+
+    /* Ô trong bảng */
+    td {
+        padding: 10px;
+        text-align: center;
+        border: 1px solid #444;
+    }
+
+        /* Cột tổng tiền */
+        td.text-danger {
+            color: #ff4d4d;
+            font-weight: bold;
+        }
+
+    /* Badge cho giờ chiếu */
+    .badge {
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 0.9rem;
+    }
+
+        .badge.bg-success {
+            background-color: #28a745;
+        }
+
+        .badge.bg-secondary {
+            background-color: #6c757d;
+        }
+
+    /* Tổng doanh thu */
+    .bg-gray-800 {
+        background-color: #2c2c2c;
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 20px;
+    }
+
+    /* Hiệu ứng hover cho link sắp xếp */
+    a.hover\:underline:hover {
+        text-decoration: underline;
+        color: #ff4d4d;
+    }
+
+</style>

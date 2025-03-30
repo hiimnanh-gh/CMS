@@ -1,25 +1,81 @@
 ﻿@model CMS.Models.Booking
 
 @{
-    ViewData["Title"] = "Chi tiết đơn đặt vé";
+    ViewData["Title"] = "Booking Details";
 }
 
-<h2>Chi tiết đơn đặt vé</h2>
+<div class="container mt-4">
+    <h2 class="text-warning text-center">@ViewData["Title"]</h2>
 
-<p><strong>Mã đơn:</strong> @Model.BookingId</p>
-<p><strong>Khách hàng:</strong> @Model.User.UserName</p>
-<p><strong>Email:</strong> @Model.EmailAddress</p>
+    <div class="card shadow-lg p-4 mt-3" style="background-color: rgba(0, 0, 0, 0.8); color: white; border-radius: 12px;">
+        <div class="card-body">
+            <p><strong>Booking ID:</strong> @Model.BookingId</p>
+            <p><strong>🙋 Customer:</strong> @Model.User.UserName</p>
+            <p><strong>📧 Email:</strong> @Model.EmailAddress</p>
 
-<p><strong>Rạp:</strong> @Model.Time.Theatre.Cinema.CinemaAddress</p>
-<p><strong>Phòng:</strong> @Model.Time.Theatre.TheatreNum</p>
+            <p><strong>🏢 Cinema:</strong> @Model.Time.Theatre.Cinema.CinemaAddress</p>
+            <p><strong>🏠 Room:</strong> @Model.Time.Theatre.TheatreNum</p>
 
-<p><strong>Ngày chiếu:</strong> @Model.Time.ShowingDate?.ToString("dd/MM/yyyy")</p>
-<p><strong>Giờ chiếu:</strong> @Model.Time.ShowingDatetime.ToString(@"hh\:mm")</p>
+            <p><strong>📅 Show Date:</strong> @Model.Time.ShowingDate?.ToString("dd/MM/yyyy")</p>
+            <p><strong>⏰ Show Time:</strong> @Model.Time.ShowingDatetime.ToString(@"hh\:mm")</p>
 
+            <p><strong>💺 Seats:</strong> @string.Join(", ", Model.BookingSeats.Select(bs => bs.Seat.SeatRow + bs.Seat.SeatNumber))</p>
 
-<p><strong>Ghế:</strong> @string.Join(", ", Model.BookingSeats.Select(bs => bs.Seat.SeatRow + bs.Seat.SeatNumber))</p>
+            <p><strong>💰 Total Price:</strong> @Model.BookingFee.ToString("N0") VND</p>
+            <p><strong>📅 Booking Date:</strong> @Model.CreatedDatetime.ToString("dd/MM/yyyy HH:mm")</p>
 
-<p><strong>Tổng tiền:</strong> @Model.BookingFee.ToString("N0") VNĐ</p>
-<p><strong>Ngày đặt:</strong> @Model.CreatedDatetime.ToString("dd/MM/yyyy HH:mm")</p>
+            <div class="text-center mt-3">
+                <a href="/BookingManagement/Index" class="btn btn-secondary px-4 py-2">Back</a>
+            </div>
+        </div>
+    </div>
+</div>
 
-<a href="/BookingManagement/Index" class="btn btn-secondary">Quay lại</a>
+<style>
+    body {
+        background-color: #121212; /* Nền tối */
+        color: #e0e0e0; /* Chữ sáng */
+    }
+
+    .container {
+        background-color: #1c1c1c; /* Nền tối cho container */
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    h2 {
+        color: #ff9800; /* Màu chữ tiêu đề sáng */
+    }
+
+    .card {
+        background: rgba(0, 0, 0, 0.85); /* Nền tối cho card */
+        border: 1px solid #f44336; /* Đỏ cho viền card */
+    }
+
+    .card-body {
+        font-size: 16px;
+    }
+
+    .btn {
+        transition: transform 0.2s ease-in-out;
+    }
+
+        .btn:hover {
+            transform: scale(1.05); /* Hiệu ứng hover cho nút */
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+
+    .text-warning {
+        color: #ff9800 !important; /* Màu chữ cho tiêu đề */
+    }
+</style>

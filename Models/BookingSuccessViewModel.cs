@@ -8,13 +8,14 @@ namespace CMS.Models;
 public class BookingSuccessViewModel
 {
     public int BookingId { get; set; }
-    public string UserName { get; set; } // Tên khách hàng
-    public DateTime CreatedDate { get; set; } // Ngày đặt vé
-    public string MovieName { get; set; } // Tên phim
-    public string CinemaLocation { get; set; } // Rạp (Hà Nội, HCM)
-    public int TheatreNum { get; set; } // Số phòng chiếu
-    public string ShowingTime { get; set; } // Giờ chiếu (VD: 15/03/2025 - 19:30)
-    public List<string> Seats { get; set; } // Danh sách ghế (VD: A1, A2, B3)
-    public decimal TotalFee { get; set; } // Tổng tiền
+    public string UserName { get; set; } = string.Empty;
+    public string MovieName { get; set; } = string.Empty;
+    public string CinemaLocation { get; set; } = string.Empty;
+    public string TheatreNum { get; set; } = string.Empty;
+    public DateTime ShowingDate { get; set; }  // Để lưu ngày chiếu
+    public TimeSpan ShowingTime { get; set; }  // Để lưu giờ chiếu
+    public List<string> Seats { get; set; } = new();
+    public decimal TotalFee { get; set; }
+    public DateTime BookingDate { get; set; }  // Ngày đặt vé
 }
 

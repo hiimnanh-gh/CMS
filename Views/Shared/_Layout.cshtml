@@ -11,63 +11,112 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] CMS</title>
+    <title>@ViewData["Title"] - Cinema Management</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            background: url('/images/cinema-bg.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .navbar {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 15px 20px;
+            border-bottom: 3px solid red;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: gold !important;
+            font-size: 24px;
+        }
+
+        .navbar-nav .nav-link {
+            color: white !important;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+            .navbar-nav .nav-link:hover {
+                color: red !important;
+            }
+
+        .container-fluid {
+            padding: 0 15px;
+        }
+
+        .content-wrapper {
+            background: rgba(0, 0, 0, 0.8);
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 80vh;
+            width: 100%;
+            padding: 30px;
+        }
+
+        .content {
+            padding: 30px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .footer {
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            width: 100%;
+            margin-top: auto;
+        }
+
+    </style>
 </head>
 <body>
+
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CMS</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">🎬 CMS</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                <div class="navbar-collapse collapse" id="navbarMenu">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Privacy">Privacy</a></li>
 
-                        @* ✅ Hiển thị menu theo Role *@
                         @if (roleId == 1) // Admin
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="MovieManagement" asp-action="Index">Quản lý phim</a>
-
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="StaffManagement" asp-action="Index">Quản lý nhân viên</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="BookingReport" asp-action="Index">Báo cáo đặt vé</a>
-                            </li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="MovieManagement" asp-action="Index">Manage Movie</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="StaffManagement" asp-action="Index">Manage Staff</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="BookingReport" asp-action="Index">Report</a></li>
                         }
                         else if (roleId == 2) // Staff
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="CustomerManagement" asp-action="Index">Quản lý khách hàng</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="BookingManagement" asp-action="Index">Quản lý đơn đặt vé</a>
-                            </li>
-                            
+                            <li class="nav-item"><a class="nav-link" asp-controller="CustomerManagement" asp-action="Index">Manage Customer</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="BookingManagement" asp-action="Index">Manage Booking</a></li>
                         }
                         else if (roleId == 3) // Customer
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Movies" asp-action="Index">Phim</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Orders" asp-action="MyOrders">Đơn hàng của tôi</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Index">Tài Khoản</a>
-                            </li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="ShowMovie" asp-action="Index">Movies</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Order" asp-action="Index">My Orders</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="Index">Account</a></li>
                         }
                     </ul>
 
@@ -75,16 +124,16 @@
                         @if (!string.IsNullOrEmpty(userName))
                         {
                             <li class="nav-item">
-                                <span class="nav-link">Xin chào, <strong>@userName</strong>!</span>
+                                <span class="nav-link">🎭 Hello, <strong>@userName</strong>!</span>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link btn btn-danger text-white" asp-controller="Login" asp-action="Logout">Đăng Xuất</a>
+                                <a class="btn btn-danger text-white nav-link" asp-controller="Login" asp-action="Logout">Logout</a>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link btn btn-primary text-white" asp-controller="Login" asp-action="Login">Đăng Nhập / Đăng ký</a>
+                                <a class="btn btn-primary text-white nav-link" asp-controller="Login" asp-action="Login">Login / Register</a>
                             </li>
                         }
                     </ul>
@@ -93,21 +142,23 @@
         </nav>
     </header>
 
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+    <div class="content-wrapper">
+        <div class="content">
+            <main role="main">
+                @RenderBody()
+            </main>
+        </div>
     </div>
 
-    <footer class="border-top footer text-muted text-center fixed-bottom bg-light py-3"> 
-        <div class="container"> 
-        &copy; 2025 - CMS - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="footer">
+        <div class="container-fluid text-center">
+            <p>&copy; 2025 - CMS 🎥 - <a asp-controller="Home" asp-action="Privacy">Privacy</a></p>
         </div>
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

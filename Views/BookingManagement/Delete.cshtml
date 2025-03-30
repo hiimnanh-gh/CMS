@@ -1,15 +1,77 @@
 ﻿@model CMS.Models.Booking
 
 @{
-    ViewData["Title"] = "Xóa đơn đặt vé";
+    ViewData["Title"] = "Delete Booking";
 }
 
-<h2>Xác nhận xóa đơn đặt vé</h2>
-<p>Bạn có chắc chắn muốn xóa đơn đặt vé mã <strong>@Model.BookingId</strong> không?</p>
+<div class="container mt-4">
+    <h2 class="text-warning text-center">@ViewData["Title"]</h2>
 
-<form asp-action="DeleteConfirmed" method="post">
-    <input type="hidden" name="id" value="@Model.BookingId" />
-    <button type="submit" class="btn btn-danger">Xóa</button>
-    <a href="/BookingManagement/Index" class="btn btn-secondary">Hủy</a>
-</form>
+    <div class="card shadow-lg p-4 mt-3" style="background-color: rgba(0, 0, 0, 0.8); color: white; border-radius: 12px;">
+        <div class="card-body">
+            <p>Are you sure you want to delete booking ID <strong>@Model.BookingId</strong>?</p>
 
+            <form asp-action="DeleteConfirmed" method="post">
+                <input type="hidden" name="id" value="@Model.BookingId" />
+                <div class="text-center mt-3">
+                    <button type="submit" class="btn btn-danger px-4 py-2">Delete</button>
+                    <a href="/BookingManagement/Index" class="btn btn-secondary px-4 py-2">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #121212; /* Nền tối */
+        color: #e0e0e0; /* Chữ sáng */
+    }
+
+    .container {
+        background-color: #1c1c1c; /* Nền tối cho container */
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    h2 {
+        color: #ff9800; /* Màu chữ tiêu đề sáng */
+    }
+
+    .card {
+        background: rgba(0, 0, 0, 0.85); /* Nền tối cho card */
+        border: 1px solid #f44336; /* Đỏ cho viền card */
+    }
+
+    .card-body {
+        font-size: 16px;
+    }
+
+    .btn {
+        transition: transform 0.2s ease-in-out;
+    }
+
+        .btn:hover {
+            transform: scale(1.05); /* Hiệu ứng hover cho nút */
+        }
+
+    .btn-danger {
+        background-color: #f44336;
+        border-color: #f44336;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+
+    .text-warning {
+        color: #ff9800 !important; /* Màu chữ cho tiêu đề */
+    }
+</style>

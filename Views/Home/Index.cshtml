@@ -1,8 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
-<h2 class="text-center">Now Showing</h2>
-
 @{
     int? roleId = Context.Session.GetInt32("RoleId");
     var userName = HttpContextAccessor.HttpContext?.Session.GetString("UserName");
@@ -10,125 +8,237 @@
     int totalPages = (int)ViewData["TotalPages"];
 }
 
-@if (roleId == 1 || roleId == 2)
-{
-    <span>Xin chào, <strong>@userName</strong>!</span>
+<!DOCTYPE html>
+<html lang="en">
 
-    <!-- Search Bar -->
-    <form method="get" class="mb-4">
-        <input type="text" name="search" class="form-control" placeholder="Search movies..." value="@ViewData["SearchQuery"]" />
-        <button type="submit" class="btn btn-primary mt-2">Search</button>
-    </form>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineMagic - Movie Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #121212; /* Dark background */
+            color: #e0e0e0; /* Light text color */
+        }
 
-    <!-- Movie List -->
-    <div class="row">
-        @foreach (var movie in Model)
-        {
-            <div class="col-md-4">
-                <div class="card mb-3">
-                    <!-- Hiển thị ảnh Poster -->
-                    <img src="@movie.PosterImage" class="card-img-top" alt="@movie.Title" style="height: 400px; object-fit: cover;">
+        .container {
+            background-color: #1c1c1c; /* Dark background for container */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
 
-                    <div class="card-body">
-                        <h5 class="card-title">@movie.Title</h5>
-                        <p class="card-text"><strong>Director:</strong> @(movie.Director?.DirectorName ?? "Unknown")</p>
-                        <p class="card-text"><strong>Status:</strong> @(movie.Status?.StatusName ?? "Unknown")</p>
-                        <p class="card-text"><strong>Description:</strong> @movie.BannerText</p>
-                        <a href="/Movie/Details/@movie.MovieId" class="btn btn-primary">View Details</a>
+        /* Custom CSS for Movie Grid */
+        #main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        #movie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+
+        /* Movie Card */
+        .movie-card {
+            background-color: #1c1c1c; /* Dark background for movie card */
+            color: #e0e0e0; /* Light text color */
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+            .movie-card:hover {
+                transform: translateY(-5px);
+            }
+
+        .poster-wrapper {
+            height: 400px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .movie-poster {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .movie-content {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .movie-title {
+            font-size: 1.3rem;
+            color: #e0e0e0; /* Light text */
+            margin-bottom: 0.8rem;
+        }
+
+        .movie-meta {
+            font-size: 0.9rem;
+            color: #b0b0b0; /* Lighter text for metadata */
+            margin-bottom: 1rem;
+        }
+
+        .btn-group-custom {
+            margin-top: auto;
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        /* Pagination Styling */
+        .cine-pagination {
+            margin-top: 2rem;
+        }
+
+            .cine-pagination .page-item {
+                margin: 0 5px;
+            }
+
+        /* User Panel */
+        #user-panel {
+            position: fixed;
+            top: 20px;
+            right: 30px;
+            z-index: 1000;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+            #user-panel a {
+                color: white;
+                background-color: #007bff;
+                padding: 10px;
+                border-radius: 5px;
+                text-decoration: none;
+            }
+
+                #user-panel a:hover {
+                    background-color: #0056b3;
+                }
+
+    </style>
+</head>
+
+<body>
+
+
+    <!-- Main Content -->
+    <div id="main-container">
+        <!-- Search Section -->
+        <form method="get" class="search-box mb-4">
+            <div class="input-group">
+                <input type="text" name="search" class="form-control" placeholder="Search movies..." value="@ViewData["SearchQuery"]">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
+
+        <!-- Movie Grid -->
+        <div id="movie-grid">
+            @foreach (var movie in Model)
+            {
+                <div class="movie-card">
+                    <div class="poster-wrapper">
+                        <img src="@movie.PosterImage" class="movie-poster" alt="@movie.Title" loading="lazy">
+                    </div>
+                    <div class="movie-content">
+                        <h3 class="movie-title">@movie.Title</h3>
+                        <div class="movie-meta">
+                            <p><strong>Director:</strong> @(movie.Director?.DirectorName ?? "Unknown")</p>
+                            <p><strong>Status:</strong> @(movie.Status?.StatusName ?? "Unknown")</p>
+                        </div>
+                        <div class="btn-group-custom">
+                            <a href="/Movie/Details/@movie.MovieId" class="btn btn-primary btn-detail">
+                                View Details
+                            </a>
+                            @if (roleId == 3)
+                            {
+                                <a href="/Booking/SelectCity?movieId=@movie.MovieId" class="btn btn-success btn-book">
+                                    Book Now
+                                </a>
+                            }
+                            else if (roleId == null)
+                            {
+                                <a class="btn btn-warning btn-book" asp-controller="Login" asp-action="Logout">
+                                    Login to Book
+                                </a>
+                            }
+                        </div>
                     </div>
                 </div>
-            </div>
-        }
+            }
+        </div>
+
+        <!-- Pagination -->
+        <nav class="cine-pagination">
+            <ul class="pagination justify-content-center">
+                @if (currentPage > 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="?search=@ViewData["SearchQuery"]&page=@(currentPage - 1)">
+                            Previous
+                        </a>
+                    </li>
+                }
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    <li class="page-item @(i == currentPage ? "active" : "")">
+                        <a class="page-link" href="?search=@ViewData["SearchQuery"]&page=@i">
+                            @i
+                        </a>
+                    </li>
+                }
+                @if (currentPage < totalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="?search=@ViewData["SearchQuery"]&page=@(currentPage + 1)">
+                            Next
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
     </div>
 
-    <!-- Pagination Controls -->
-    <nav>
-        <ul class="pagination justify-content-center">
-            @if (currentPage > 1)
-            {
-                <li class="page-item">
-                    <a class="page-link" href="?search=@ViewData["SearchQuery"]&page=@(currentPage - 1)">Previous</a>
-                </li>
-            }
-            @for (int i = 1; i <= totalPages; i++)
-            {
-                <li class="page-item @(i == currentPage ? "active" : "")">
-                    <a class="page-link" href="?search=@ViewData["SearchQuery"]&page=@i">@i</a>
-                </li>
-            }
-            @if (currentPage < totalPages)
-            {
-                <li class="page-item">
-                    <a class="page-link" href="?search=@ViewData["SearchQuery"]&page=@(currentPage + 1)">Next</a>
-                </li>
-            }
-        </ul>
-    </nav>
-}
-else if (roleId == 3)
-{
-    <span>Xin chào, <strong>@userName</strong>!</span>
+    <script>
+        // Card Entrance Animation
+        document.querySelectorAll('.movie-card').forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                card.style.transition = `opacity 0.5s ${index * 0.1}s, transform 0.5s ${index * 0.1}s`;
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 100);
+        });
 
-    <!-- Search Bar -->
-    <form method="get" class="mb-4">
-        <input type="text" name="search" class="form-control" placeholder="Search movies..." value="@ViewData["SearchQuery"]" />
-        <button type="submit" class="btn btn-primary mt-2">Search</button>
-    </form>
+        // Smooth Scroll for Pagination
+        document.querySelectorAll('.page-link').forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                window.scrollTo({
+                    top: document.getElementById('movie-grid').offsetTop - 100,
+                    behavior: 'smooth'
+                });
+                setTimeout(() => window.location.href = this.href, 500);
+            });
+        });
+    </script>
 
-    <!-- Movie List -->
-    <div class="row">
-        @foreach (var movie in Model)
-        {
-            <div class="col-md-4">
-                <div class="card mb-3">
-                    <!-- Hiển thị ảnh Poster -->
-                    <img src="@movie.PosterImage" class="card-img-top" alt="@movie.Title" style="height: 400px; object-fit: cover;">
+</body>
 
-                    <div class="card-body">
-                        <h5 class="card-title">@movie.Title</h5>
-                        <p class="card-text"><strong>Director:</strong> @(movie.Director?.DirectorName ?? "Unknown")</p>
-                        <p class="card-text"><strong>Status:</strong> @(movie.Status?.StatusName ?? "Unknown")</p>
-                        <p class="card-text"><strong>Description:</strong> @movie.BannerText</p>
-                        <a href="/Movie/Details/@movie.MovieId" class="btn btn-primary">View Details</a>
-                        <a href="/Booking/SelectCity?movieId=@movie.MovieId" class="btn btn-primary">Book Now</a>
-
-
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
-
-    <!-- Pagination Controls -->
-    <nav>
-        <ul class="pagination justify-content-center">
-            @if (currentPage > 1)
-            {
-                <li class="page-item">
-                    <a class="page-link" href="?search=@ViewData["SearchQuery"]&page=@(currentPage - 1)">Previous</a>
-                </li>
-            }
-            @for (int i = 1; i <= totalPages; i++)
-            {
-                <li class="page-item @(i == currentPage ? "active" : "")">
-                    <a class="page-link" href="?search=@ViewData["SearchQuery"]&page=@i">@i</a>
-                </li>
-            }
-            @if (currentPage < totalPages)
-            {
-                <li class="page-item">
-                    <a class="page-link" href="?search=@ViewData["SearchQuery"]&page=@(currentPage + 1)">Next</a>
-                </li>
-            }
-        </ul>
-    </nav>
-}
-
-
-
-
-
-else
-{
-    <span>Xin chào, khách hàng ẩn danh!</span>
-}
+</html>

@@ -17,4 +17,5 @@ public partial class Genre
     [StringLength(50)]
     [Unicode(false)]
     public string GenreName { get; set; } = null!;
+    public virtual ICollection<MovieGenre> MovieGenres { get; set; }
 }

@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args); // Chỉ gọi 1 lần
 
 // Cấu hình kết nối database
 builder.Services.AddDbContext<CinemaDbContext>(options =>
-    options.UseSqlServer("Server=DESKTOP-UQHR23R;Database=CinemaManagement;User Id=sa;Password=123;TrustServerCertificate=True"));
+    options.UseSqlServer("Server=DESKTOP-UQHR23R;Database=CinemaManagement2;User Id=sa;Password=123;TrustServerCertificate=True"));
 
 // Cấu hình MVC + View Compilation
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();

@@ -1,41 +1,115 @@
 ﻿@model List<CMS.Models.User>
 
 @{
-    ViewData["Title"] = "Danh sách khách hàng";
+    ViewData["Title"] = "Customer List";
 }
 
-<h2>Danh sách khách hàng</h2>
+<div class="container mt-4">
+    <h2 class="text-warning text-center">@ViewData["Title"]</h2>
 
-<a href="@Url.Action("CreateCustomer", "CustomerManagement")" class="btn btn-success mb-3">Thêm khách hàng</a>
+    <!-- Add Customer Button -->
+    <a href="@Url.Action("CreateCustomer", "CustomerManagement")" class="btn btn-success mb-3">Add Customer</a>
 
-<form method="get" class="mb-3">
-    <input type="text" name="search" class="form-control d-inline w-25" placeholder="Tìm kiếm..." value="@ViewData["SearchQuery"]" />
-    <button type="submit" class="btn btn-primary">Tìm</button>
-</form>
+    <!-- Search Form -->
+    <form method="get" class="mb-3">
+        <input type="text" name="search" class="form-control d-inline w-25" placeholder="Search..." value="@ViewData["SearchQuery"]" />
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Tên</th>
-            <th>Email</th>
-            <th>Số điện thoại</th>
-            <th>Hành động</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var customer in Model)
-        {
+    <!-- Customer Table -->
+    <table class="table table-bordered">
+        <thead>
             <tr>
-                <td>@customer.UserId</td>
-                <td>@customer.UserName</td>
-                <td>@customer.Email</td>
-                <td>@customer.PhoneNum</td>
-                <td>
-                    <a href="@Url.Action("EditCustomer", "CustomerManagement", new { id = customer.UserId })" class="btn btn-warning">Sửa</a>
-                    <a href="@Url.Action("Delete", "CustomerManagement", new { id = customer.UserId })" class="btn btn-danger">Xóa</a>
-                </td>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Actions</th>
             </tr>
+        </thead>
+        <tbody>
+            @foreach (var customer in Model)
+            {
+                <tr>
+                    <td>@customer.UserId</td>
+                    <td>@customer.UserName</td>
+                    <td>@customer.Email</td>
+                    <td>@customer.PhoneNum</td>
+                    <td>
+                        <a href="@Url.Action("EditCustomer", "CustomerManagement", new { id = customer.UserId })" class="btn btn-warning">Edit</a>
+                        <a href="@Url.Action("Delete", "CustomerManagement", new { id = customer.UserId })" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<style>
+    body {
+        background-color: #121212; /* Nền tối */
+        color: #e0e0e0; /* Chữ sáng */
+    }
+
+    .container {
+        background-color: #1c1c1c; /* Nền tối cho container */
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    h2 {
+        color: #ff9800; /* Màu chữ tiêu đề sáng */
+    }
+
+    .btn {
+        transition: transform 0.2s ease-in-out;
+    }
+
+        .btn:hover {
+            transform: scale(1.05); /* Hiệu ứng hover cho nút */
         }
-    </tbody>
-</table>
+
+    .btn-success {
+        background-color: #4CAF50;
+        border-color: #4CAF50;
+    }
+
+    .btn-primary {
+        background-color: #2196F3;
+        border-color: #2196F3;
+    }
+
+    .btn-warning {
+        background-color: #FF9800;
+        border-color: #FF9800;
+    }
+
+    .btn-danger {
+        background-color: #f44336;
+        border-color: #f44336;
+    }
+
+    .table {
+        background-color: #2c2c2c;
+        color: #e0e0e0;
+        border: 1px solid #444;
+    }
+
+        .table th, .table td {
+            color: #e0e0e0;
+            border: 1px solid #444;
+        }
+
+    .table-bordered th, .table-bordered td {
+        border-color: #444;
+    }
+
+    .table thead {
+        background-color: #333;
+    }
+
+    .table tbody tr:hover {
+        background-color: #444; /* Highlight rows on hover */
+    }
+</style>

@@ -1,10 +1,68 @@
 ﻿@model CMS.Models.Movie
 
-<h2>Xóa phim</h2>
-<p>Bạn có chắc chắn muốn xóa phim <strong>@Model.Title</strong> không?</p>
+<h2>Delete Movie</h2>
+<p>Are you sure you want to delete the movie <strong>@Model.Title</strong>?</p>
 
 <form asp-action="Delete" method="post">
     <input type="hidden" asp-for="MovieId" />
-    <button type="submit" class="btn btn-danger">Xóa</button>
-    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
 </form>
+
+<style>
+    /* General body and background */
+    body {
+        background-color: #121212; /* Dark background */
+        color: #e0e0e0; /* Light text */
+    }
+
+    /* Container styling */
+    .container {
+        background-color: #1c1c1c; /* Dark background for container */
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Title */
+    h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #ff4d4d; /* Red color for the title (delete action) */
+    }
+
+    /* Paragraph text */
+    p {
+        font-size: 1.2rem;
+        color: #e0e0e0;
+    }
+
+    /* Button styles */
+    .btn {
+        background-color: #007bff;
+        color: #fff;
+        border-radius: 5px;
+        padding: 10px 20px;
+    }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+    .btn-danger {
+        background-color: #dc3545; /* Red for the delete button */
+    }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: #fff;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+</style>

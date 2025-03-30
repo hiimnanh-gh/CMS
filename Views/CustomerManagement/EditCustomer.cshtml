@@ -1,30 +1,105 @@
 ﻿@model CMS.Models.User
 
-<h2>Chỉnh sửa khách hàng</h2>
+@{
+    ViewData["Title"] = "Edit Customer";
+}
 
-<form asp-action="EditCustomer" asp-route-id="@Model.UserId" method="post">
-    <input type="hidden" asp-for="UserId" />
+<div class="container mt-4">
+    <h2 class="text-warning text-center">@ViewData["Title"]</h2>
 
-    <div class="form-group">
-        <label asp-for="UserName">Tên khách hàng</label>
-        <input asp-for="UserName" class="form-control" required />
-    </div>
+    <form asp-action="EditCustomer" asp-route-id="@Model.UserId" method="post">
+        <input type="hidden" asp-for="UserId" />
 
-    <div class="form-group">
-        <label asp-for="Email">Email</label>
-        <input asp-for="Email" class="form-control" required />
-    </div>
+        <!-- Customer Name -->
+        <div class="mb-3">
+            <label for="UserName" class="text-light">Customer Name:</label>
+            <input asp-for="UserName" class="form-control" required />
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="PhoneNum">Số điện thoại</label>
-        <input asp-for="PhoneNum" class="form-control" />
-    </div>
+        <!-- Email -->
+        <div class="mb-3">
+            <label for="Email" class="text-light">Email:</label>
+            <input asp-for="Email" class="form-control" required />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="RoleId">Chức vụ</label>
-        <select asp-for="RoleId" class="form-control" asp-items="@(new SelectList(ViewBag.Roles, "RoleId", "RoleName"))"></select>
-    </div>
+        <!-- Phone Number -->
+        <div class="mb-3">
+            <label for="PhoneNum" class="text-light">Phone Number:</label>
+            <input asp-for="PhoneNum" class="form-control" />
+            <span asp-validation-for="PhoneNum" class="text-danger"></span>
+        </div>
 
-    <button type="submit" class="btn btn-primary">Lưu</button>
-    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
-</form>
+        <!-- Role -->
+        <div class="mb-3">
+            <label for="RoleId" class="text-light">Role:</label>
+            <select asp-for="RoleId" class="form-control" asp-items="@(new SelectList(ViewBag.Roles, "RoleId", "RoleName"))">
+                <option value="">Select Role</option>
+            </select>
+        </div>
+
+        <!-- Submit and Cancel Buttons -->
+        <button type="submit" class="btn btn-success">Save</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+
+<style>
+    body {
+        background-color: #121212; /* Dark background */
+        color: #e0e0e0; /* Light text color */
+    }
+
+    .container {
+        background-color: #1c1c1c; /* Dark background for container */
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    h2 {
+        color: #ff9800; /* Bright orange for title */
+    }
+
+    .form-control {
+        background-color: #2c2c2c; /* Dark background for inputs */
+        color: #e0e0e0; /* Light text color */
+        border: 1px solid #444; /* Subtle border */
+    }
+
+        .form-control:focus {
+            background-color: #333; /* Darken input on focus */
+            border-color: #ff9800; /* Highlight border on focus */
+        }
+
+    label {
+        color: #ffffff; /* Light label text */
+    }
+
+    .btn {
+        transition: transform 0.2s ease-in-out;
+    }
+
+        .btn:hover {
+            transform: scale(1.05); /* Button hover effect */
+        }
+
+    .btn-success {
+        background-color: #4CAF50;
+        border-color: #4CAF50;
+    }
+
+    .btn-secondary {
+        background-color: #2c2c2c;
+        border-color: #444;
+    }
+
+        .btn-secondary:hover {
+            background-color: #444;
+        }
+
+    .text-danger {
+        color: #f44336 !important; /* Red text for validation errors */
+    }
+</style>

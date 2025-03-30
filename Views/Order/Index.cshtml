@@ -1,0 +1,170 @@
+﻿@model IEnumerable<CMS.Models.BookingReportViewModel>
+
+@{
+    ViewData["Title"] = "My Orders";
+}
+
+<div class="container mt-4">
+    <h2 class="text-primary text-center mb-4">🎟 My Orders</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center">
+            <p>You have no bookings yet.</p>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered align-middle">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Movie</th>
+                        <th>Cinema</th>
+                        <th>Theatre Room</th>
+                        <th>Show Date</th>
+                        <th>Showtime</th>
+                        <th>Seats</th>
+                        <th>Total Price</th>
+                        <th>Booking Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model)
+                    {
+                        <tr>
+                            <td class="text-center fw-bold">@order.BookingId</td>
+                            <td>@order.MovieName</td>
+                            <td>@order.CinemaLocation</td>
+                            <td class="text-center">Room @order.TheatreNum</td>
+                            <td class="text-center">@order.ShowingDate?.ToString("dd/MM/yyyy")</td>
+                            <td class="text-center">
+                                @if (order.ShowingTime.HasValue)
+                                {
+                                    <span class="badge bg-success">@order.ShowingTime.Value.ToString(@"hh\:mm")</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">TBA</span>
+                                }
+                            </td>
+                            <td>@string.Join(", ", order.Seats)</td>
+                            <td class="text-end fw-bold text-danger">@order.TotalFee.ToString("N0") VND</td>
+                            <td class="text-center">@order.BookingDate.ToString("dd/MM/yyyy")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+<style>
+    /* Global Background and Text Colors */
+    body {
+        background-color: #212529; /* Dark background */
+        color: #f8f9fa; /* Light text */
+    }
+
+    /* Container Styling */
+    .container {
+        background-color: #343a40; /* Slightly lighter dark background */
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+    /* General container styling */
+    .container {
+        background-color: #1c1c1c;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Title styling */
+    h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #ff4d4d; /* Red color for the title */
+    }
+
+    /* Table styling */
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-size: 1rem;
+    }
+
+        .table th,
+        .table td {
+            padding: 10px;
+            text-align: center;
+        }
+
+    /* Table header styling */
+    .table-dark {
+        background-color: #343a40;
+        color: #ffffff;
+        font-weight: bold;
+    }
+
+    /* Row hover effect */
+    .table-hover tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    /* Table cell styling */
+    .table td,
+    .table th {
+        border: 1px solid #ccc;
+        color: #fff;
+    }
+
+        .table td.text-center,
+        .table th.text-center {
+            text-align: center;
+        }
+
+        .table td.text-end,
+        .table th.text-end {
+            text-align: end;
+        }
+
+    /* Badge styling for showing time */
+    .badge {
+        font-size: 0.9rem;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+
+        .badge.bg-success {
+            background-color: #28a745;
+        }
+
+        .badge.bg-secondary {
+            background-color: #6c757d;
+        }
+
+    /* Total fee styling */
+    .table td.text-danger {
+        color: #ff4d4d;
+        font-weight: bold;
+    }
+
+    /* Info alert box styling */
+    .alert-info {
+        background-color: #17a2b8;
+        color: white;
+        font-weight: bold;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    /* Footer spacing */
+    .text-center {
+        text-align: center;
+    }
+
+</style>

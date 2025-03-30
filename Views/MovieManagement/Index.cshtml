@@ -1,38 +1,110 @@
 ﻿@model List<CMS.Models.Movie>
 @{
-    ViewData["Title"] = "Quản lý phim";
+    ViewData["Title"] = "Movie Management";
 }
 
-<h2>Danh sách phim</h2>
-<a class="btn btn-primary" asp-controller="MovieManagement" asp-action="Create">Thêm phim mới</a>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Tiêu đề</th>
-            <th>Đạo diễn</th>
-            <th>Trạng thái</th>
-            <th>Ngày phát hành</th>
-            <th>Hành động</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var movie in Model)
-        {
-            <tr>
-                <td>@movie.Title</td>
-                <td>@(movie.Director?.DirectorName ?? "Chưa cập nhật")</td>
-                <td>@(movie.Status?.StatusName ?? "Chưa cập nhật")</td>
-                <td>@(movie.ReleaseDate?.ToString("dd/MM/yyyy") ?? "Chưa cập nhật")</td>
-                <td>
-                    <a href="@Url.Action("Details", "Movie", new { id = movie.MovieId })" class="btn btn-info">Chi tiết</a>
-                    <a href="@Url.Action("Edit", "MovieManagement", new { id = movie.MovieId })" class="btn btn-warning">Sửa</a>
-                    <a href="@Url.Action("Delete", "MovieManagement", new { id = movie.MovieId })" class="btn btn-danger">Xóa</a>
-
-					<a href="@Url.Action("ManageTheatres", "MovieManagement", new { movieId = movie.MovieId })" class="btn btn-primary">Quản lý rạp chiếu</a>
-                </td>
-            </tr>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - CMS</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #121212; /* Dark background */
+            color: #e0e0e0; /* Light text */
         }
 
-    </tbody>
-</table>
+        .container {
+            background-color: #1c1c1c; /* Dark background for container */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .movie-card {
+            background: #1c1c1c; /* Dark background for movie cards */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            color: #e0e0e0; /* Light text for card content */
+        }
+
+            .movie-card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            }
+
+        .btn-action a {
+            margin: 5px;
+            transition: transform 0.2s ease;
+        }
+
+            .btn-action a:hover {
+                transform: scale(1.05);
+            }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            color: #e0e0e0; /* Light text for header */
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+            border-color: #3498db;
+        }
+
+            .btn-primary:hover {
+                background-color: #2980b9;
+                border-color: #2980b9;
+            }
+
+        .btn-sm {
+            font-size: 0.875rem;
+            padding: 8px 12px;
+        }
+
+        .col-md-4 {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Movie List</h2>
+        <div class="d-flex justify-content-end mb-3">
+            <a class="btn btn-primary" asp-controller="MovieManagement" asp-action="SelectDirector">Add New Movie</a>
+        </div>
+
+        <div class="row">
+            @foreach (var movie in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="movie-card">
+                        <h5>@movie.Title</h5>
+                        <p><strong>Director:</strong> @(movie.Director?.DirectorName ?? "Not Updated")</p>
+                        <p><strong>Status:</strong> @(movie.Status?.StatusName ?? "Not Updated")</p>
+                        <p><strong>Release Date:</strong> @(movie.ReleaseDate?.ToString("dd/MM/yyyy") ?? "Not Updated")</p>
+                        <div class="btn-action">
+                            <a href="@Url.Action("Details", "Movie", new { id = movie.MovieId })" class="btn btn-info btn-sm">Details</a>
+                            <a href="@Url.Action("Edit", "MovieManagement", new { id = movie.MovieId })" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="@Url.Action("Delete", "MovieManagement", new { id = movie.MovieId })" class="btn btn-danger btn-sm">Delete</a>
+                            <a href="@Url.Action("ManageTheatres", "MovieManagement", new { movieId = movie.MovieId })" class="btn btn-primary btn-sm">Manage Theatres</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

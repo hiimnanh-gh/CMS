@@ -1,10 +1,65 @@
 ﻿@model CMS.Models.User
 
-<h2>Xóa khách hàng</h2>
-<p>Bạn có chắc chắn muốn xóa khách hàng <strong>@Model.UserName</strong> không?</p>
+@{
+    ViewData["Title"] = "Delete Customer";
+}
 
-<form asp-action="Delete" method="post">
-    <input type="hidden" asp-for="UserId" />
-    <button type="submit" class="btn btn-danger">Xóa</button>
-    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
-</form>
+<div class="container mt-4">
+    <h2 class="text-danger text-center">@ViewData["Title"]</h2>
+
+    <p class="text-light">Are you sure you want to delete customer <strong>@Model.UserName</strong>?</p>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="UserId" />
+
+        <!-- Delete Button -->
+        <button type="submit" class="btn btn-danger">Delete</button>
+
+        <!-- Cancel Button -->
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+
+<style>
+    body {
+        background-color: #121212; /* Dark background */
+        color: #e0e0e0; /* Light text color */
+    }
+
+    .container {
+        background-color: #1c1c1c; /* Dark background for container */
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    h2 {
+        color: #f44336; /* Red color for the title */
+    }
+
+    .text-light {
+        color: #e0e0e0; /* Light text color */
+    }
+
+    .btn {
+        transition: transform 0.2s ease-in-out;
+    }
+
+        .btn:hover {
+            transform: scale(1.05); /* Button hover effect */
+        }
+
+    .btn-danger {
+        background-color: #f44336;
+        border-color: #f44336;
+    }
+
+    .btn-secondary {
+        background-color: #2c2c2c;
+        border-color: #444;
+    }
+
+        .btn-secondary:hover {
+            background-color: #444;
+        }
+</style>

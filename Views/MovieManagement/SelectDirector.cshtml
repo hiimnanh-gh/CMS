@@ -4,10 +4,10 @@
 
 <h2>Chọn hoặc Thêm Đạo Diễn</h2>
 
-<form asp-action="SelectDirector" method="post">
+<form asp-action="SelectDirector" method="post" id="directorForm">
     <div class="form-group">
-        <label for="DirectorId">Chọn đạo diễn</label>
-        <select name="DirectorId" class="form-control">
+        <label for="DirectorId" class="text-white">Chọn đạo diễn</label>
+        <select name="DirectorId" class="form-control" id="directorSelect">
             <option value="">Chọn đạo diễn</option>
             @foreach (var director in ViewBag.Directors)
             {
@@ -16,12 +16,108 @@
         </select>
     </div>
 
-    <h4>Hoặc</h4>
+    <h4 class="text-center text-white">Hoặc</h4>
 
     <div class="form-group">
-        <label for="DirectorName">Thêm mới đạo diễn</label>
-        <input type="text" name="DirectorName" class="form-control" />
+        <label for="DirectorName" class="text-white">Thêm mới đạo diễn</label>
+        <input type="text" name="DirectorName" class="form-control" id="newDirectorInput" />
     </div>
 
     <button type="submit" class="btn btn-primary">Tiếp tục</button>
 </form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var directorSelect = document.getElementById("directorSelect");
+        var newDirectorInput = document.getElementById("newDirectorInput");
+
+        function toggleInputs() {
+            if (directorSelect.value) {
+                newDirectorInput.disabled = true;
+                newDirectorInput.value = "";
+            } else {
+                newDirectorInput.disabled = false;
+            }
+        }
+
+        directorSelect.addEventListener("change", toggleInputs);
+    });
+</script>
+
+<!-- CSS Styles -->
+<style>
+    /* General body and background */
+    body {
+        background-color: #121212; /* Dark background */
+        color: #e0e0e0; /* Light text */
+    }
+
+    /* Container styling */
+    .container {
+        background-color: #1c1c1c; /* Dark background for container */
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Title */
+    h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #ff4d4d; /* Red color for the title */
+    }
+
+    /* Heading for section */
+    h4 {
+        font-size: 1.5rem;
+        color: #ff4d4d; /* Red color */
+    }
+
+    /* Form styling */
+    .form-group label {
+        color: #fff; /* Make label text white */
+        font-weight: 600;
+    }
+
+    .form-control {
+        background-color: #333;
+        color: #fff;
+        border: 1px solid #444;
+    }
+
+        .form-control:focus {
+            background-color: #444;
+            border-color: #ff4d4d;
+            box-shadow: 0 0 5px rgba(255, 77, 77, 0.5);
+        }
+
+    /* Option styling */
+    select option {
+        color: #fff; /* Make option text white */
+        background-color: #333; /* Background color for options */
+    }
+
+        select option:hover {
+            background-color: #444; /* Darker background color when hovered */
+        }
+    /* Button styles */
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-size: 1.1rem;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    /* Centering the form */
+    form {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    
+</style>

@@ -1,95 +1,227 @@
 ﻿@model CMS.Models.Movie
 
 @{
-    ViewData["Title"] = "Chỉnh sửa phim";
+    ViewData["Title"] = "Edit Movie";
 }
 
-<h2>Chỉnh sửa phim</h2>
+<div class="container mt-4">
+    <h2 class="text-center mb-4 text-primary">Edit Movie</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-8 p-4 shadow-lg rounded bg-dark">
+            <form asp-action="Edit" method="post">
+                <input type="hidden" asp-for="MovieId" />
 
-<form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="MovieId" />
+                <!-- Movie Title -->
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label fw-bold">Movie Title</label>
+                    <input asp-for="Title" class="form-control border-primary" required />
+                </div>
 
-    <!-- Tên phim -->
-    <div class="form-group">
-        <label asp-for="Title">Tên phim</label>
-        <input asp-for="Title" class="form-control" required />
+                <!-- Description -->
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label fw-bold">Description</label>
+                    <textarea asp-for="Description" class="form-control border-primary" rows="3"></textarea>
+                </div>
+
+                <!-- Age Rating -->
+                <div class="mb-3">
+                    <label asp-for="AgeRating" class="form-label fw-bold">Age Rating</label>
+                    <input asp-for="AgeRating" class="form-control border-primary" />
+                </div>
+
+                <!-- Runtime -->
+                <div class="mb-3">
+                    <label asp-for="RuntimeMin" class="form-label fw-bold">Runtime (minutes)</label>
+                    <input asp-for="RuntimeMin" type="number" class="form-control border-primary" />
+                </div>
+
+                <!-- Release Date -->
+                <div class="mb-3">
+                    <label asp-for="ReleaseDate" class="form-label fw-bold">Release Date</label>
+                    <input asp-for="ReleaseDate" type="date" class="form-control border-primary" />
+                </div>
+
+                <!-- Trailer -->
+                <div class="mb-3">
+                    <label asp-for="TrailerLink" class="form-label fw-bold">Trailer (URL)</label>
+                    <input asp-for="TrailerLink" class="form-control border-primary" />
+                    @if (!string.IsNullOrEmpty(Model.TrailerLink))
+                    {
+                        <div class="mt-2 text-center">
+                            <iframe width="100%" height="315"
+                                    src="@Model.TrailerLink.Replace("watch?v=", "embed/")"
+                                    frameborder="0" allowfullscreen>
+                            </iframe>
+                        </div>
+                    }
+                </div>
+                <!-- Poster -->
+                <div class="form-group">
+                    <label>Upload Poster:</label>
+                    <input type="file" asp-for="PosterFile" class="form-control" accept="image/*" />
+                </div>
+
+                <!-- Synopsis -->
+                <div class="mb-3">
+                    <label asp-for="Synopsis" class="form-label fw-bold">Synopsis</label>
+                    <textarea asp-for="Synopsis" class="form-control border-primary" rows="4"></textarea>
+                </div>
+
+                <!-- Director -->
+                <div class="mb-3">
+                    <label for="DirectorId" class="form-label fw-bold">Director</label>
+                    <select asp-for="DirectorId" class="form-select border-primary">
+                        @foreach (var director in ViewBag.Directors)
+                        {
+                            <option value="@director.DirectorId" selected="@(Model.DirectorId == director.DirectorId ? "selected" : null)">
+                                @director.DirectorName
+                            </option>
+                        }
+                    </select>
+                </div>
+
+                <!-- Movie Status -->
+                <div class="mb-3">
+                    <label for="StatusId" class="form-label fw-bold">Status</label>
+                    <select asp-for="StatusId" class="form-select border-primary">
+                        @foreach (var status in ViewBag.Statuses)
+                        {
+                            <option value="@status.StatusId" selected="@(Model.StatusId == status.StatusId ? "selected" : null)">
+                                @status.StatusName
+                            </option>
+                        }
+                    </select>
+                </div>
+
+                <!-- Buttons -->
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success me-2"><i class="fas fa-save"></i> Save Changes</button>
+                    <!-- Nút Back -->
+                    <button class="btn-back" onclick="goBack()">Back</button>
+
+                    <!-- CSS -->
+                    <style>
+                        .btn-back {
+                            display: inline-flex;
+                            align-items: center;
+                            justify-content: center;
+                            background-color: #3498db; /* Màu xanh dương */
+                            color: white;
+                            font-size: 16px;
+                            font-weight: bold;
+                            padding: 10px 20px;
+                            border: none;
+                            border-radius: 8px;
+                            cursor: pointer;
+                            transition: all 0.3s ease-in-out;
+                            text-decoration: none;
+                            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+                        }
+
+                            .btn-back:hover {
+                                background-color: #2980b9; /* Màu xanh đậm hơn khi hover */
+                                transform: translateY(-2px);
+                                box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+                            }
+
+                            .btn-back:active {
+                                transform: scale(0.95);
+                                box-shadow: none;
+                            }
+
+                            .btn-back::before {
+                                content: "⬅ ";
+                                font-size: 18px;
+                                margin-right: 8px;
+                            }
+                    </style>
+
+                    <!-- JavaScript -->
+                    <script>
+                        function goBack() {
+                            if (document.referrer) {
+                                window.history.back(); // Quay về trang trước
+                            } else {
+                                window.location.href = "/Home/Index"; // Nếu không có trang trước thì về trang chủ
+                            }
+                        }
+                    </script>
+                </div>
+            </form>
+        </div>
     </div>
+</div>
 
-    <!-- Mô tả -->
-    <div class="form-group">
-        <label asp-for="Description">Mô tả</label>
-        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
-    </div>
+<style>
+    /* General body and background */
+    body {
+        background-color: #121212; /* Dark background */
+        color: #e0e0e0; /* Light text */
+    }
 
-    <!-- Độ tuổi -->
-    <div class="form-group">
-        <label asp-for="AgeRating">Độ tuổi</label>
-        <input asp-for="AgeRating" class="form-control" />
-    </div>
+    /* Container styling */
+    .container {
+        background-color: #1c1c1c; /* Dark background for container */
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
 
-    <!-- Thời lượng -->
-    <div class="form-group">
-        <label asp-for="RuntimeMin">Thời lượng (phút)</label>
-        <input asp-for="RuntimeMin" type="number" class="form-control" />
-    </div>
+    /* Title */
+    h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #007bff; /* Blue color for the title */
+    }
 
-    <!-- Ngày phát hành -->
-    <div class="form-group">
-        <label asp-for="ReleaseDate">Ngày phát hành</label>
-        <input asp-for="ReleaseDate" type="date" class="form-control" />
-    </div>
+    /* Form container */
+    .row.justify-content-center {
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+    }
 
-    <!-- Trailer -->
-    <div class="form-group">
-        <label asp-for="TrailerLink">Trailer (URL)</label>
-        <input asp-for="TrailerLink" class="form-control" />
-    </div>
+    /* Card styling */
+    .col-md-8 {
+        background-color: #212121; /* Dark background for the form area */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 
-    <!-- Banner -->
-    <div class="form-group">
-        <label asp-for="BannerText">Banner</label>
-        <input asp-for="BannerText" class="form-control" />
-    </div>
+    /* Input and Textarea fields */
+    input.form-control, textarea.form-control, select.form-select {
+        background-color: #333333; /* Dark input background */
+        color: #e0e0e0; /* Light text */
+        border-radius: 5px;
+        padding: 10px;
+        font-size: 1rem;
+        border: 1px solid #007bff; /* Blue border */
+    }
 
-    <!-- Poster -->
-    <div class="form-group">
-        <label asp-for="PosterImage">Poster</label>
-        <input asp-for="PosterImage" class="form-control" />
-    </div>
+    /* Labels */
+    label.form-label {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #e0e0e0;
+    }
 
-    <!-- Nội dung tóm tắt -->
-    <div class="form-group">
-        <label asp-for="Synopsis">Tóm tắt nội dung</label>
-        <textarea asp-for="Synopsis" class="form-control" rows="4"></textarea>
-    </div>
+    /* Button styles */
+    .btn {
+        background-color: #007bff;
+        color: #fff;
+        border-radius: 5px;
+        padding: 10px 20px;
+    }
 
-    <!-- Đạo diễn -->
-    <div class="form-group">
-        <label for="DirectorId">Đạo diễn</label>
-        <select asp-for="DirectorId" class="form-control">
-            @foreach (var director in ViewBag.Directors)
-            {
-                <option value="@director.DirectorId" selected="@(Model.DirectorId == director.DirectorId ? "selected" : null)">
-                    @director.DirectorName
-                </option>
-            }
-        </select>
-    </div>
+        .btn:hover {
+            background-color: #0056b3;
+        }
 
-    <!-- Trạng thái phim -->
-    <div class="form-group">
-        <label for="StatusId">Trạng thái</label>
-        <select asp-for="StatusId" class="form-control">
-            @foreach (var status in ViewBag.Statuses)
-            {
-                <option value="@status.StatusId" selected="@(Model.StatusId == status.StatusId ? "selected" : null)">
-                    @status.StatusName
-                </option>
-            }
-        </select>
-    </div>
-
-    <br />
-    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
-    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
-</form>
+    /* File input styling */
+    #posterInput {
+        background-color: #333333;
+        color: #e0e0e0;
+        border: 1px solid #007bff;
+    }
+</style>

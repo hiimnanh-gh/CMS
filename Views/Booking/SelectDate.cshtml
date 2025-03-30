@@ -1,18 +1,57 @@
 ﻿@model List<DateTime?>
 @{
-    ViewBag.Title = "Chọn Ngày Chiếu";
+    ViewBag.Title = "Select Show Date";
     int movieId = ViewBag.MovieId;
     int cinemaId = ViewBag.CinemaId;
 }
 
-<h2>Chọn Ngày Chiếu</h2>
-<ul>
-    @foreach (var date in Model)
-    {
-        <li>
-            <a href="@Url.Action("SelectShowTime", "Booking", new { movieId = movieId, cinemaId = cinemaId, showingDate = date?.ToString("yyyy-MM-dd") })">
-                @date?.ToString("dd/MM/yyyy")
+<div class="container mt-4">
+    <h2 class="text-center text-light">Select Show Date</h2>
+    <div class="list-group">
+        @foreach (var date in Model)
+        {
+            <a href="@Url.Action("SelectShowTime", "Booking", new { movieId = movieId, cinemaId = cinemaId, showingDate = date?.ToString("yyyy-MM-dd") })"
+               class="list-group-item list-group-item-action text-center bg-dark text-light border-light">
+                <strong>@date?.ToString("dd/MM/yyyy")</strong>
             </a>
-        </li>
+        }
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #121212; /* Nền tối */
+        color: #e0e0e0; /* Chữ sáng */
     }
-</ul>
+
+    .container {
+        background-color: #1c1c1c; /* Nền tối cho container */
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    h2 {
+        color: #4caf50; /* Màu tiêu đề sáng */
+        margin-bottom: 20px;
+    }
+
+    .list-group-item {
+        background-color: #333; /* Màu nền tối cho item */
+        border: 1px solid #444;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+        .list-group-item:hover {
+            background-color: #555; /* Màu nền item khi hover */
+            color: #fff; /* Chữ sáng khi hover */
+            transform: scale(1.05);
+        }
+
+        .list-group-item strong {
+            font-size: 1.1em;
+        }
+</style>

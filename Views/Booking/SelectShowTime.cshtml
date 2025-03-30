@@ -1,14 +1,55 @@
 ﻿@model List<CMS.Models.ShowTimeViewModel>
 
-<h2>Chọn Giờ Chiếu</h2>
+@{
+    ViewBag.Title = "Select Showtime";
+}
 
-<ul>
-    @foreach (var time in Model)
-    {
-        <li>
-            <a href="@Url.Action("SelectSeats", "Booking", new { timeId = time.TimeId })">
-                @time.ShowingDatetime
+<div class="container mt-4">
+    <h2 class="text-center text-light">Select Showtime</h2>
+    <div class="list-group">
+        @foreach (var time in Model)
+        {
+            <a href="@Url.Action("SelectSeats", "Booking", new { timeId = time.TimeId })"
+               class="list-group-item list-group-item-action text-center">
+                <strong>@time.ShowingDatetime</strong>
             </a>
-        </li>
+        }
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #121212; /* Nền tối */
+        color: #ffffff; /* Chữ sáng */
     }
-</ul>
+
+    .container {
+        background-color: #1c1c1c; /* Nền tối cho container */
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    h2 {
+        color: #ffffff; /* Màu tiêu đề sáng */
+        margin-bottom: 20px;
+    }
+
+    .list-group-item {
+        background-color: #333; /* Màu nền tối cho item */
+        border: 1px solid #444;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        color: #ffffff; /* Chữ sáng luôn */
+    }
+
+        .list-group-item:hover {
+            background-color: #555; /* Màu nền item khi hover */
+            transform: scale(1.05);
+        }
+
+        .list-group-item strong {
+            font-size: 1.1em;
+        }
+</style>

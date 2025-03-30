@@ -1,10 +1,10 @@
 ﻿@model CMS.Models.Movie
 @{
-    ViewData["Title"] = "Thêm Phim";
+    ViewData["Title"] = "Add Movie";
     var director = ViewBag.Director as CMS.Models.Director;
 }
 
-<h2>Thêm Phim Mới</h2>
+<h2>Add New Movie</h2>
 
 @if (!ViewData.ModelState.IsValid)
 {
@@ -18,41 +18,112 @@
     </div>
 }
 
-<p>Đạo diễn: <strong>@(director?.DirectorName ?? "Không xác định")</strong></p>
+<p>Director: <strong>@(director?.DirectorName ?? "Unknown")</strong></p>
 
-<form method="post">
-    <input type="hidden" asp-for="DirectorId" value="@director?.DirectorId" />
-    <input type="hidden" name="StatusId" value="@ViewBag.StatusId" />
+<form method="post" enctype="multipart/form-data">
+    <!-- Hidden field for DirectorId -->
+    <input type="hidden" name="DirectorId" value="@director?.DirectorId" />
 
     <div class="form-group">
-        <label asp-for="Title">Tiêu đề phim:</label>
+        <label asp-for="Title">Movie Title:</label>
         <input asp-for="Title" class="form-control" required />
     </div>
 
     <div class="form-group">
-        <label asp-for="Description">Mô tả:</label>
+        <label asp-for="Description">Description:</label>
         <textarea asp-for="Description" class="form-control"></textarea>
     </div>
 
     <div class="form-group">
-        <label asp-for="AgeRating">Độ tuổi:</label>
+        <label asp-for="AgeRating">Age Rating:</label>
         <input asp-for="AgeRating" type="number" class="form-control" required />
     </div>
 
     <div class="form-group">
-        <label asp-for="RuntimeMin">Thời lượng (phút):</label>
+        <label asp-for="RuntimeMin">Duration (minutes):</label>
         <input asp-for="RuntimeMin" type="number" class="form-control" required />
     </div>
 
     <div class="form-group">
-        <label asp-for="ReleaseDate">Ngày phát hành:</label>
+        <label asp-for="ReleaseDate">Release Date:</label>
         <input asp-for="ReleaseDate" type="date" class="form-control" required />
     </div>
 
     <div class="form-group">
-        <label asp-for="TrailerLink">Link trailer:</label>
+        <label asp-for="TrailerLink">Trailer Link:</label>
         <input asp-for="TrailerLink" type="url" class="form-control" />
     </div>
+    <div class="form-group">
+        <label>Upload Poster:</label>
+        <input type="file" asp-for="PosterFile" class="form-control" accept="image/*" />
+    </div>
 
-    <button type="submit" class="btn btn-primary">Lưu</button>
+    <button type="submit" class="btn btn-primary">Save</button>
 </form>
+
+<!-- CSS Styles -->
+<style>
+    /* General body and background */
+    body {
+        background-color: #121212; /* Dark background */
+        color: #e0e0e0; /* Light text */
+    }
+
+    /* Container styling */
+    .container {
+        background-color: #1c1c1c; /* Dark background for container */
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Title */
+    h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #ff4d4d; /* Red color for the title */
+    }
+
+    /* Paragraph text */
+    p {
+        font-size: 1.2rem;
+        color: #e0e0e0;
+    }
+
+    /* Alert styling */
+    .alert-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+        border-color: #f5c6cb;
+    }
+
+    /* Form input styles */
+    .form-group label {
+        color: #e0e0e0; /* Label color */
+        font-weight: 600;
+    }
+
+    .form-control {
+        background-color: #333;
+        color: #fff;
+        border: 1px solid #444;
+    }
+
+        .form-control:focus {
+            background-color: #444;
+            border-color: #ff4d4d;
+            box-shadow: 0 0 5px rgba(255, 77, 77, 0.5);
+        }
+
+    /* Button styles */
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+        border-radius: 5px;
+        padding: 10px 20px;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+</style>

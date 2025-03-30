@@ -149,85 +149,89 @@ namespace CMS.Controllers.book
 
 
         // B6: Lưu booking
-    [HttpPost]
-    public IActionResult SaveBooking(List<int> seatIds, int timeId)
-    {
-        // Lấy thông tin user từ Session
-        var userId = HttpContext.Session.GetInt32("UserId");
-        var userName = HttpContext.Session.GetString("UserName");
-        var email = HttpContext.Session.GetString("UserEmail");
-
-        if (userId == null || string.IsNullOrEmpty(userName))
+        [HttpPost]
+        public IActionResult SaveBooking(List<int> seatIds, int timeId)
         {
-            return RedirectToAction("Login", "Account");
-        }
+            // Lấy thông tin user từ Session
+            var userId = HttpContext.Session.GetInt32("UserId");
+            var userName = HttpContext.Session.GetString("UserName");
+            var email = HttpContext.Session.GetString("UserEmail");
 
-        // Tính phí
-        var totalFee = seatIds.Count * 100000; // mỗi ghế 100k
+            if (userId == null || string.IsNullOrEmpty(userName))
+            {
+                return RedirectToAction("Login", "Account");
+            }
 
-        // Lưu vào bảng Booking
-        var booking = new Booking
-        {
-            UserId = userId.Value,
-            TimeId = timeId,
-            CreatedDatetime = DateTime.Now,
-            EmailAddress = email,
-            BookingFee = totalFee
-        };
-        _dbc.Bookings.Add(booking);
-        _dbc.SaveChanges();
+            // Tính phí
+            var totalFee = seatIds.Count * 100000; // mỗi ghế 100k
 
-        // Lưu các ghế vào bảng BookingSeat
-        foreach (var seatId in seatIds)
-        {
-            var bookingSeat = new BookingSeat
+            // Lưu vào bảng Booking
+            var booking = new Booking
+            {
+                UserId = userId.Value,
+                TimeId = timeId,
+                CreatedDatetime = DateTime.Now,
+                EmailAddress = email,
+                BookingFee = totalFee
+            };
+            _dbc.Bookings.Add(booking);
+            _dbc.SaveChanges();
+
+            // Lưu các ghế vào bảng BookingSeat
+            foreach (var seatId in seatIds)
+            {
+                var bookingSeat = new BookingSeat
+                {
+                    BookingId = booking.BookingId,
+                    SeatId = seatId
+                };
+                _dbc.BookingSeats.Add(bookingSeat);
+            }
+            _dbc.SaveChanges();
+
+            // Lấy thông tin chi tiết suất chiếu, rạp, phim, phòng
+            var showingTime = _dbc.ShowingTimes
+                .Include(st => st.Theatre)
+                    .ThenInclude(t => t.Cinema)
+                .FirstOrDefault(st => st.TimeId == timeId);
+
+            if (showingTime == null) return NotFound();
+
+            // Lấy Movie từ bảng movie_theatre theo theatre_id của suất chiếu
+            var movie = _dbc.MovieTheatres
+                .Include(mt => mt.Movie)
+                .FirstOrDefault(mt => mt.TheatreId == showingTime.TheatreId)?.Movie;
+
+            if (movie == null) return NotFound(); // Không tìm thấy phim
+
+            // Danh sách ghế
+            var seatList = _dbc.Seats
+                .Where(s => seatIds.Contains(s.SeatId))
+                .Select(s => s.SeatRow + s.SeatNumber)
+                .ToList();
+
+            // Chuẩn bị model cho trang BookingSuccess
+            var bookingInfo = new BookingSuccessViewModel
             {
                 BookingId = booking.BookingId,
-                SeatId = seatId
+                UserName = userName,
+                MovieName = movie.Title,
+                CinemaLocation = showingTime.Theatre.Cinema.CinemaName,
+                TheatreNum = $"Room No. {showingTime.Theatre.TheatreNum}",
+                ShowingDate = showingTime.ShowingDate ?? DateTime.MinValue, // Nếu null thì dùng ngày mặc định
+                ShowingTime = showingTime.ShowingDatetime, // Giữ nguyên TimeSpan
+                Seats = seatList,
+                TotalFee = booking.BookingFee,
+                BookingDate = booking.CreatedDatetime
             };
-            _dbc.BookingSeats.Add(bookingSeat);
+
+
+
+            // Trả về View BookingSuccess
+            return View("BookingSuccess", bookingInfo);
         }
-        _dbc.SaveChanges();
-
-        // Lấy thông tin chi tiết suất chiếu, rạp, phim, phòng
-        var showingTime = _dbc.ShowingTimes
-            .Include(st => st.Theatre)
-                .ThenInclude(t => t.Cinema)
-            .FirstOrDefault(st => st.TimeId == timeId);
-
-        if (showingTime == null) return NotFound();
-
-        // Lấy Movie từ bảng movie_theatre theo theatre_id của suất chiếu
-        var movie = _dbc.MovieTheatres
-            .Include(mt => mt.Movie)
-            .FirstOrDefault(mt => mt.TheatreId == showingTime.TheatreId)?.Movie;
-
-        if (movie == null) return NotFound(); // Không tìm thấy phim
-
-        // Danh sách ghế
-        var seatList = _dbc.Seats
-            .Where(s => seatIds.Contains(s.SeatId))
-            .Select(s => s.SeatRow + s.SeatNumber)
-            .ToList();
-
-        // Chuẩn bị model cho trang BookingSuccess
-        var bookingInfo = new BookingSuccessViewModel
-        {
-            BookingId = booking.BookingId,
-            UserName = userName,
-            Seats = seatList,
-            TotalFee = totalFee,
-            MovieName = movie.Title, // Tên phim lấy qua movie_theatre
-            CinemaLocation = showingTime.Theatre.Cinema.CinemaName,
-            TheatreNum = showingTime.Theatre.TheatreNum,
-            ShowingTime = $"{showingTime.ShowingDate?.ToString("dd/MM/yyyy")} - {showingTime.ShowingDatetime}",
-        };
 
 
-        // Trả về View BookingSuccess
-        return View("BookingSuccess", bookingInfo);
-    }
-       
 
 
 

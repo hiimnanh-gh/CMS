@@ -1,31 +1,140 @@
 ﻿@{
-    ViewData["Title"] = "Chính sách bảo mật";
+    ViewData["Title"] = "Privacy Policy";
 }
 
-<h1 class="text-2xl font-bold mb-4">Chính sách Bảo mật</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - CMS</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css">
+    <style>
+        /* Dark Mode Base Styles */
+        body {
+            background-color: #121212; /* Dark background */
+            color: #e0e0e0; /* Light text */
+            font-family: Arial, sans-serif;
+        }
 
-<p>Chúng tôi cam kết bảo vệ thông tin cá nhân của bạn khi sử dụng hệ thống quản lý rạp phim.</p>
+        .privacy-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 25px;
+            background: #1c1c1c; /* Dark container background */
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
 
-<h2 class="text-xl font-semibold mt-4 mb-2">1. Thu thập thông tin</h2>
-<p>Chúng tôi có thể thu thập các thông tin như: tên, số điện thoại, email, và các thông tin liên quan đến việc đặt vé và giao dịch.</p>
+            .privacy-container h1 {
+                color: #e0e0e0;
+                text-align: center;
+                font-size: 26px;
+                margin-bottom: 15px;
+            }
 
-<h2 class="text-xl font-semibold mt-4 mb-2">2. Mục đích sử dụng thông tin</h2>
-<ul class="list-disc pl-5">
-    <li>Xử lý đơn đặt vé và thanh toán.</li>
-    <li>Cung cấp thông tin về lịch chiếu, vé đặt, và các dịch vụ hỗ trợ.</li>
-    <li>Cải thiện chất lượng dịch vụ và trải nghiệm người dùng.</li>
-</ul>
+            .privacy-container h2 {
+                color: #3498db; /* Blue text for section titles */
+                border-left: 4px solid #3498db;
+                padding-left: 10px;
+                font-size: 22px;
+                margin-top: 20px;
+            }
 
-<h2 class="text-xl font-semibold mt-4 mb-2">3. Bảo mật thông tin</h2>
-<p>Thông tin của bạn được lưu trữ và bảo vệ an toàn. Chúng tôi không chia sẻ thông tin cho bên thứ ba khi chưa có sự đồng ý của bạn, trừ khi pháp luật yêu cầu.</p>
+            .privacy-container ul {
+                background: #2c2c2c; /* Slightly darker background for the list */
+                padding: 15px;
+                border-radius: 5px;
+            }
 
-<h2 class="text-xl font-semibold mt-4 mb-2">4. Quyền lợi của khách hàng</h2>
-<ul class="list-disc pl-5">
-    <li>Yêu cầu xem, chỉnh sửa hoặc xóa thông tin cá nhân.</li>
-    <li>Liên hệ với chúng tôi để được hỗ trợ về thông tin đã cung cấp.</li>
-</ul>
+            .privacy-container p, .privacy-container li {
+                font-size: 16px;
+                color: #ddd; /* Light text for readability */
+            }
 
-<h2 class="text-xl font-semibold mt-4 mb-2">5. Liên hệ</h2>
-<p>Nếu bạn có bất kỳ câu hỏi nào về Chính sách bảo mật, vui lòng liên hệ với chúng tôi qua email: <a href="mailto:support@cinema.vn" class="text-blue-600">support@cinema.vn</a> hoặc số điện thoại: 0123 456 789.</p>
+            .privacy-container a {
+                color: #e74c3c; /* Red color for links */
+                font-weight: bold;
+                text-decoration: none;
+                transition: color 0.3s ease;
+            }
 
-<p class="mt-4">Cảm ơn bạn đã tin tưởng và sử dụng dịch vụ của chúng tôi.</p>
+                .privacy-container a:hover {
+                    color: #2980b9;
+                    text-decoration: underline;
+                }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+            .fade-in.show {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        /* Optional: Smooth scrolling effect */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="privacy-container fade-in">
+        <h1>Privacy Policy</h1>
+
+        <p>We are committed to protecting your personal information when using the cinema management system.</p>
+
+        <h2>1. Information Collection</h2>
+        <p>We may collect information such as your name, phone number, email, and details related to ticket bookings and transactions.</p>
+
+        <h2>2. Purpose of Information Usage</h2>
+        <ul>
+            <li>Process ticket bookings and payments.</li>
+            <li>Provide information about showtimes, booked tickets, and support services.</li>
+            <li>Improve service quality and user experience.</li>
+        </ul>
+
+        <h2>3. Information Security</h2>
+        <p>Your information is securely stored and protected. We do not share your information with third parties without your consent, except as required by law.</p>
+
+        <h2>4. Customer Rights</h2>
+        <ul>
+            <li>Request to view, edit, or delete personal information.</li>
+            <li>Contact us for assistance regarding the information provided.</li>
+        </ul>
+
+        <h2>5. Contact</h2>
+        <p>
+            If you have any questions regarding the Privacy Policy, please contact us via email at
+            <a href="mailto:support@cinema.vn" class="contact-link">support@cinema.vn</a> or phone number: <a href="tel:0123456789" class="contact-link">0123 456 789</a>.
+        </p>
+
+        <p class="mt-4">Thank you for trusting and using our services.</p>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Fade-in effect for the container
+            document.querySelector(".privacy-container").classList.add("show");
+
+            // Hover effect for links
+            const links = document.querySelectorAll(".contact-link");
+
+            links.forEach(link => {
+                link.addEventListener("mouseenter", function () {
+                    this.style.color = "#2980b9";
+                });
+
+                link.addEventListener("mouseleave", function () {
+                    this.style.color = "#e74c3c";
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

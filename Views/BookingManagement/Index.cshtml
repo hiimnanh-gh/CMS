@@ -1,47 +1,110 @@
 ﻿@model IEnumerable<CMS.Models.BookingIndexViewModel>
 
 @{
-    ViewData["Title"] = "Quản lý đơn đặt vé";
+    ViewData["Title"] = "Booking Management";
 }
 
-<h2>Quản lý đơn đặt vé</h2>
+<div class="container mt-4">
+    <h2 class="text-warning text-center">@ViewData["Title"]</h2>
 
-<a href="/BookingManagement/Create" class="btn btn-success mb-3">Thêm mới đơn đặt vé</a>
-
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Mã đơn</th>
-            <th>Khách hàng</th>
-            <th>Rạp</th>
-            <th>Phòng</th>
-            <th>Ngày chiếu</th>
-            <th>Giờ chiếu</th>
-            <th>Ghế</th>
-            <th>Tổng tiền</th>
-            <th>Ngày đặt</th>
-            <th>Thao tác</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+    <table class="table table-bordered table-dark">
+        <thead>
             <tr>
-                <td>@item.BookingId</td>
-                <td>@item.CustomerName</td>
-                <td>@item.TheatreLocation</td>
-                <td>@item.TheatreNum</td>
-                <td>@item.ShowDate.ToString("dd/MM/yyyy")</td> <!-- ✅ DateTime -->
-                <td>@item.ShowingDateTime.ToString(@"hh\:mm")</td>     <!-- ✅ TimeSpan -->
-                <td>@item.Seats</td>
-                <td>@item.TotalFee.ToString("N0") VNĐ</td>
-                <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
-                <td>
-                    <a href="/BookingManagement/Details/@item.BookingId" class="btn btn-info btn-sm">Xem</a>
-                    <a href="/BookingManagement/Edit/@item.BookingId" class="btn btn-warning btn-sm">Sửa</a>
-                    <a href="/BookingManagement/Delete/@item.BookingId" class="btn btn-danger btn-sm">Xóa</a>
-                </td>
+                <th>Booking ID</th>
+                <th>Customer</th>
+                <th>Cinema</th>
+                <th>Room</th>
+                <th>Show Date</th>
+                <th>Show Time</th>
+                <th>Seats</th>
+                <th>Total Price</th>
+                <th>Booking Date</th>
+                <th>Actions</th>
             </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.BookingId</td>
+                    <td>@item.CustomerName</td>
+                    <td>@item.TheatreLocation</td>
+                    <td>@item.TheatreNum</td>
+                    <td>@item.ShowDate.ToString("dd/MM/yyyy")</td>
+                    <td>@item.ShowingDateTime.ToString(@"hh\:mm")</td>
+                    <td>@string.Join(", ", item.Seats)</td>
+                    <td>@item.TotalFee.ToString("N0") VND</td>
+                    <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <a href="/BookingManagement/Details/@item.BookingId" class="btn btn-info btn-sm">View</a>
+                        <a href="/BookingManagement/Delete/@item.BookingId" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<style>
+    body {
+        background-color: #121212; /* Nền tối */
+        color: #e0e0e0; /* Chữ sáng */
+    }
+
+    .container {
+        background-color: #1c1c1c; /* Nền tối cho container */
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    h2 {
+        color: #ff9800; /* Màu chữ tiêu đề sáng */
+    }
+
+    table {
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    th, td {
+        color: #e0e0e0;
+        text-align: center;
+    }
+
+    th {
+        background-color: #333;
+    }
+
+    td {
+        background-color: #1c1c1c;
+    }
+
+    .btn {
+        transition: transform 0.2s ease-in-out;
+    }
+
+        .btn:hover {
+            transform: scale(1.05); /* Hiệu ứng hover cho nút */
         }
-    </tbody>
-</table>
+
+    .btn-info {
+        background-color: #17a2b8;
+        border-color: #17a2b8;
+    }
+
+        .btn-info:hover {
+            background-color: #138496;
+            border-color: #117a8b;
+        }
+
+    .btn-danger {
+        background-color: #f44336;
+        border-color: #f44336;
+    }
+
+        .btn-danger:hover {
+            background-color: #e53935;
+            border-color: #c62828;
+        }
+</style>
